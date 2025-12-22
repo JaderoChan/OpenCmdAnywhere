@@ -1,0 +1,20 @@
+#pragma once
+
+#define APP_TITLE           "@OCAW_TITLE@"
+#define APP_ORGANIZATION    "@OCAW_ORGANIZATION@"
+#define APP_VERSION         "@PROJECT_VERSION@"
+#define APP_VERSION_MAJOR   @PROJECT_VERSION_MAJOR@
+#define APP_VERSION_MINOR   @PROJECT_VERSION_MINOR@
+#define APP_VERSION_PATCH   @PROJECT_VERSION_PATCH@
+#define APP_COPYRIGHT_TEXT  "@OCAW_COPYRIGHT_TEXT@"
+
+#define APP_LANG_FILENAME   "language/languages.json"
+#define APP_LOCK_FILENAME   ".Lock-@OCAW_TITLE@-c5932713-13c6-44ed-bbe8-faa0be818e71"
+
+#define COMMAND_DISPLAY_NAME        "CMD"
+#define POWER_SHELL_DISPLAY_NAME    "Power Shell"
+#define COMMAND_EXE                 "C:/Windows/System32/cmd.exe"
+#define POWER_SHELL_EXE             "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
+
+#define RUN_AS_USER_HOTKEY  "Alt+T"
+#define RUN_AS_ADMIN_HOTKEY "Alt+Shift+T"

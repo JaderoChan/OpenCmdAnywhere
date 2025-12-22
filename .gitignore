@@ -1,0 +1,8 @@
+.vscode/
+benchmark/
+build/
+vs/
+data/
+temp/
+backup/
+install/
