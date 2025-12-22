@@ -13,7 +13,7 @@
 
 int main(int argc, char* argv[])
 {
-    QLockFile lock(QDir::current().absoluteFilePath(APP_LOCK_FILENAME));
+    QLockFile lock(QDir::temp().absoluteFilePath(APP_LOCK_FILENAME));
     if (lock.isLocked() || !lock.tryLock(500))
         return 0;
 
