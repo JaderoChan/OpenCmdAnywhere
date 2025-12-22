@@ -9,6 +9,7 @@ AboutDialog::AboutDialog(QWidget* parent) :
 {
     ui.setupUi(this);
     ui.icon->setPixmap(QPixmap(":/icon/icon.ico"));
+    ui.versionLbl->setText(APP_VERSION);
     ui.copyrightLbl->setText(APP_COPYRIGHT_TEXT);
     updateText();
 }
