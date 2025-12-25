@@ -74,10 +74,7 @@ bool SystemTray::eventFilter(QObject* obj, QEvent* event)
 {
     Q_UNUSED(obj);
     if (event->type() == QEvent::LanguageChange)
-    {
         updateText();
-        return false;
-    }
     return QSystemTrayIcon::eventFilter(obj, event);
 }
 
