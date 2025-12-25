@@ -13,7 +13,6 @@ class Settings
 public:
     static Settings& getInstance();
 
-    // The return value may be empty.
     static QString getLangugae();
     // Return: <display name : executable filename>, the executable filename may be invalid.
     static std::pair<QString, QString> getCurrentExecutable();

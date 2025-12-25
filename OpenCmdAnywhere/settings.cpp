@@ -1,6 +1,7 @@
 #include "settings.h"
 
 #include <qapplication.h>
+#include <qlocale.h>
 
 #include "config.h"
 
@@ -21,7 +22,13 @@ Settings& Settings::getInstance()
 
 QString Settings::getLangugae()
 {
-    return getInstance().sm_.readSetting("Language", "").toString();
+    QLocale locale = QLocale::system();
+    switch (locale.language())
+    {
+        case QLocale::Language::English: return getInstance().sm_.readSetting("Language", "EN").toString();
+        case QLocale::Language::Chinese: return getInstance().sm_.readSetting("Language", "ZH").toString();
+        default: return getInstance().sm_.readSetting("Language", "EN").toString();
+    }
 }
 
 std::pair<QString, QString> Settings::getCurrentExecutable()
