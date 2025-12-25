@@ -29,6 +29,7 @@ SystemTray::SystemTray(QObject* parent) :
 
     runOnStartup_ = new QAction(menu_);
     runOnStartup_->setCheckable(true);
+    runOnStartup_->setChecked(isRunOnStartup());
     menu_->addAction(runOnStartup_);
     menu_->addSeparator();
 

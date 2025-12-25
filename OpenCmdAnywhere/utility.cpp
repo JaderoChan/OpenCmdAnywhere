@@ -10,6 +10,18 @@
 
 #include <minilog.hpp>
 
+bool isRunOnStartup()
+{
+    QSettings settings(
+        "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+        QSettings::NativeFormat);
+    QString appName = QCoreApplication::applicationName();
+    QString appPath = QDir::toNativeSeparators(QCoreApplication::applicationFilePath());
+    if (settings.contains(appName) && settings.value(appName) == appPath)
+        return true;
+    return false;
+}
+
 bool setRunOnStartup(bool enable)
 {
     QSettings settings(
