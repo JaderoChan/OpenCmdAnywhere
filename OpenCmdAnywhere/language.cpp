@@ -13,7 +13,7 @@ QString setLanguage(const QString& langId)
 {
     easytr::setLanguages(APP_LANG_FILENAME);
     if (easytr::languages().empty())
-        mlog::info("Invalid Languages file");
+        mlog::info("Invalid or empty Languages file");
 
     std::string id = langId.toStdString();
     if (easytr::hasLanguage(id))
@@ -26,7 +26,7 @@ QString setLanguage(const QString& langId)
     // Fallthrough, fallback
     else
     {
-        mlog::info("Expected language is miss, will use the fallback language");
+        mlog::info("Expected language is missing, try fall back to the default language");
         if (easytr::languages().empty())
         {
             mlog::warning("Not find any language");
@@ -36,9 +36,9 @@ QString setLanguage(const QString& langId)
         {
             id = easytr::languages().getIds().front();
             if (easytr::setCurrentLanguage(id))
-                mlog::info("Success to use the fallback language: {}", id.c_str());
+                mlog::info("Successfully fall back to language: {}", id.c_str());
             else
-                mlog::warning("Failed to use the fallback language: {}", id.c_str());
+                mlog::warning("Failed to fall back to language: {}", id.c_str());
         }
     }
 
