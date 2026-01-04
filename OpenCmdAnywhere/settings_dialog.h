@@ -3,14 +3,14 @@
 #include <qdialog.h>
 #include <qevent.h>
 
-#include "ui_setting_dialog.h"
+#include "ui_settings_dialog.h"
 
-class SettingDialog : public QDialog
+class SettingsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SettingDialog(QWidget* parent = nullptr);
+    explicit SettingsDialog(QWidget* parent = nullptr);
 
 signals:
     void executablesChanged();
@@ -31,5 +31,5 @@ private:
     // 获取当前选中的行索引，若未选中行则返回-1；
     int getSelectedRow_();
 
-    Ui::SettingDialog ui;
+    Ui::SettingsDialog ui;
 };

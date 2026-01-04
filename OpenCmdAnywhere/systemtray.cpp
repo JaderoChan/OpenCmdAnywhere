@@ -11,7 +11,7 @@
 #include "utility.h"
 
 #include "about_dialog.h"
-#include "setting_dialog.h"
+#include "settings_dialog.h"
 
 SystemTray::SystemTray(QObject* parent) :
     QSystemTrayIcon(QIcon(":/icon/icon.ico"), parent),
@@ -101,8 +101,8 @@ void SystemTray::onRunOnStartupTriggered()
 
 void SystemTray::onSettingTriggered()
 {
-    SettingDialog dlg = SettingDialog();
-    connect(&dlg, &SettingDialog::executablesChanged, this, &SystemTray::updateExecutableMenu);
+    SettingsDialog dlg = SettingsDialog();
+    connect(&dlg, &SettingsDialog::executablesChanged, this, &SystemTray::updateExecutableMenu);
     dlg.exec();
 }
 

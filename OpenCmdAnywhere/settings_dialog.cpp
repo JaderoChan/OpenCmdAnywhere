@@ -1,4 +1,4 @@
-#include "setting_dialog.h"
+#include "settings_dialog.h"
 
 #include <qheaderview.h>
 
@@ -9,7 +9,7 @@
 #include "settings.h"
 #include "executable_item_dialog.h"
 
-SettingDialog::SettingDialog(QWidget* parent) :
+SettingsDialog::SettingsDialog(QWidget* parent) :
     QDialog(parent)
 {
     ui.setupUi(this);
@@ -22,21 +22,21 @@ SettingDialog::SettingDialog(QWidget* parent) :
     ui.executableTable->setColumnCount(2);
     ui.executableTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 
-    connect(this, &SettingDialog::executablesChanged, this, &SettingDialog::updateExecutablesTable);
-    connect(ui.parameterEdit, &QTextEdit::textChanged, this, &SettingDialog::onParameterTextChanged);
+    connect(this, &SettingsDialog::executablesChanged, this, &SettingsDialog::updateExecutablesTable);
+    connect(ui.parameterEdit, &QTextEdit::textChanged, this, &SettingsDialog::onParameterTextChanged);
     connect(ui.runAsUserHotkeyEdit, &KeyCombinationInputer::inputFinished, this, [=](QKeyCombination kc)
     { onHotkeyChanged(kc, false); });
     connect(ui.runAsAdminHotkeyEdit, &KeyCombinationInputer::inputFinished, this, [=](QKeyCombination kc)
     { onHotkeyChanged(kc, true); });
-    connect(ui.addExeBtn, &QPushButton::clicked, this, &SettingDialog::onAddExeBtnClicked);
-    connect(ui.editExeBtn, &QPushButton::clicked, this, &SettingDialog::onEditExeBtnClicked);
-    connect(ui.removeExeBtn, &QPushButton::clicked, this, &SettingDialog::onRemoveExeBtnClicked);
+    connect(ui.addExeBtn, &QPushButton::clicked, this, &SettingsDialog::onAddExeBtnClicked);
+    connect(ui.editExeBtn, &QPushButton::clicked, this, &SettingsDialog::onEditExeBtnClicked);
+    connect(ui.removeExeBtn, &QPushButton::clicked, this, &SettingsDialog::onRemoveExeBtnClicked);
 
     updateExecutablesTable();
     updatetText();
 }
 
-void SettingDialog::updatetText()
+void SettingsDialog::updatetText()
 {
     setWindowTitle(EASYTR("Setting"));
     ui.parameterLbl->setText(EASYTR("Startup Parameter"));
@@ -51,14 +51,14 @@ void SettingDialog::updatetText()
     ui.executableTable->setHorizontalHeaderLabels({EASYTR("Display Name"), EASYTR("Executable Filename")});
 }
 
-void SettingDialog::changeEvent(QEvent* event)
+void SettingsDialog::changeEvent(QEvent* event)
 {
     if (event->type() == QEvent::LanguageChange)
         updatetText();
     QDialog::changeEvent(event);
 }
 
-void SettingDialog::updateExecutablesTable()
+void SettingsDialog::updateExecutablesTable()
 {
     ui.executableTable->clearContents();
     for (int i = ui.executableTable->rowCount(); i >=0; --i)
@@ -74,12 +74,12 @@ void SettingDialog::updateExecutablesTable()
     }
 }
 
-void SettingDialog::onParameterTextChanged()
+void SettingsDialog::onParameterTextChanged()
 {
     Settings::setParameter(ui.parameterEdit->toPlainText());
 }
 
-void SettingDialog::onHotkeyChanged(QKeyCombination kc, bool isAdmin)
+void SettingsDialog::onHotkeyChanged(QKeyCombination kc, bool isAdmin)
 {
     auto kcStr = QKeySequence(kc).toString();
     auto gbhkKc = gbhk::KeyCombination::fromString(kcStr.toStdString());
@@ -95,7 +95,7 @@ void SettingDialog::onHotkeyChanged(QKeyCombination kc, bool isAdmin)
         ui.runAsUserHotkeyEdit->setKeyCombination(ks);
 }
 
-void SettingDialog::onAddExeBtnClicked()
+void SettingsDialog::onAddExeBtnClicked()
 {
     ExecutableItemDialog dlg(this);
     int ret = dlg.exec();
@@ -107,7 +107,7 @@ void SettingDialog::onAddExeBtnClicked()
     }
 }
 
-void SettingDialog::onEditExeBtnClicked()
+void SettingsDialog::onEditExeBtnClicked()
 {
     int row = getSelectedRow_();
     if (row == -1)
@@ -129,7 +129,7 @@ void SettingDialog::onEditExeBtnClicked()
     }
 }
 
-void SettingDialog::onRemoveExeBtnClicked()
+void SettingsDialog::onRemoveExeBtnClicked()
 {
     int row = getSelectedRow_();
     if (row == -1)
@@ -139,7 +139,7 @@ void SettingDialog::onRemoveExeBtnClicked()
     emit executablesChanged();
 }
 
-int SettingDialog::getSelectedRow_()
+int SettingsDialog::getSelectedRow_()
 {
     auto items = ui.executableTable->selectedItems();
     if (items.isEmpty())

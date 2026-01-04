@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SettingDialog</class>
- <widget class="QDialog" name="SettingDialog">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,7 +19,7 @@
    <enum>Qt::ClickFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>SettingDialog</string>
+   <string>SettingsDialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,2">
    <item>
