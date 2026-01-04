@@ -19,9 +19,9 @@ QString setLanguage(const QString& langId)
     if (easytr::hasLanguage(id))
     {
         if (easytr::setCurrentLanguage(id))
-            mlog::info("Success to change the language to: {}", id.c_str());
+            mlog::info("Successfully set language to: {}", id.c_str());
         else
-            mlog::warning("Failed to change the language to: {}", id.c_str());
+            mlog::warning("Failed to set language to: {}", id.c_str());
     }
     // Fallthrough, fallback
     else
