@@ -8,6 +8,7 @@
 Settings::Settings()
     : sm_(QApplication::organizationName(), QApplication::applicationName())
 {
+    QMutexLocker<QMutex> locker(&mtx_);
     executables_ = sm_.readSetting(
         "Executables",
         QVariantMap({{COMMAND_DISPLAY_NAME, COMMAND_EXE}, {POWER_SHELL_DISPLAY_NAME, POWER_SHELL_EXE}})
@@ -101,20 +102,27 @@ void Settings::setIsRunOnStartup(bool value)
 
 QVariantMap Settings::getAllExecutables()
 {
+    QMutexLocker<QMutex> locker(&getInstance().mtx_);
     return getInstance().executables_;
 }
 
 void Settings::addExecutable(const QString& displayName, const QString& filename)
 {
-    getInstance().executables_[displayName] = filename;
-    getInstance().sm_.writeSetting("Executables", getInstance().executables_);
+    {
+        QMutexLocker<QMutex> locker(&getInstance().mtx_);
+        getInstance().executables_[displayName] = filename;
+    }
+    getInstance().sm_.writeSetting("Executables", getAllExecutables());
 }
 
 void Settings::removeExecutable(const QString& displayName)
 {
-    getInstance().executables_.remove(displayName);
-    getInstance().sm_.writeSetting("Executables", getInstance().executables_);
-    // 如果删除的是当前Executable，则尝试回退当前Executable
+    {
+        QMutexLocker<QMutex> locker(&getInstance().mtx_);
+        getInstance().executables_.remove(displayName);
+    }
+    getInstance().sm_.writeSetting("Executables", getAllExecutables());
+    // 如果删除的是当前Executable，则尝试回退当前Executable。
     if (getCurrentExecutable().first == displayName)
     {
         auto exes = getAllExecutables();

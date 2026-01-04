@@ -1,10 +1,12 @@
 #pragma once
 
+#include <qmutex.h>
 #include <qobject.h>
 #include <qstring.h>
 #include <qsettings.h>
 #include <qvariant.h>
 
+// thread-safe
 class SettingsManager : public QObject
 {
 public:
@@ -22,5 +24,6 @@ public:
     bool has(const QString& key);
 
 private:
+    mutable QMutex mtx_;
     QSettings* settings_ = nullptr;
 };

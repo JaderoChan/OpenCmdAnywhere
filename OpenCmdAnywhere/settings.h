@@ -1,13 +1,14 @@
 #pragma once
 
 #include <qmap.h>
+#include <qmutex.h>
 #include <qstring.h>
 
 #include <global_hotkey/key_combination.hpp>
 
 #include "settings_manager.h"
 
-// Singleton, hungry run
+// Singleton, hungry run, thread-safe
 class Settings
 {
 public:
@@ -38,6 +39,7 @@ private:
     Settings(const Settings&) = delete;
     Settings& operator=(const Settings&) = delete;
 
+    mutable QMutex mtx_;
     SettingsManager sm_;
     QVariantMap executables_;
 };
