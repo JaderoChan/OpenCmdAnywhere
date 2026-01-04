@@ -23,10 +23,10 @@ QString setLanguage(const QString& langId)
         else
             mlog::warning("Failed to change the language to: {}", id.c_str());
     }
-    // Fallthrough, rollback
+    // Fallthrough, fallback
     else
     {
-        mlog::info("Expected language is miss, start rollback the language");
+        mlog::info("Expected language is miss, will use the fallback language");
         if (easytr::languages().empty())
         {
             mlog::warning("Not find any language");
@@ -36,9 +36,9 @@ QString setLanguage(const QString& langId)
         {
             id = easytr::languages().getIds().front();
             if (easytr::setCurrentLanguage(id))
-                mlog::info("Success to rollback the language to: {}", id.c_str());
+                mlog::info("Success to use the fallback language: {}", id.c_str());
             else
-                mlog::warning("Failed to rollback the language to: {}", id.c_str());
+                mlog::warning("Failed to use the fallback language: {}", id.c_str());
         }
     }
 
