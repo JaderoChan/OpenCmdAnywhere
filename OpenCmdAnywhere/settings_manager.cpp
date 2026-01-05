@@ -1,22 +1,15 @@
 #include "settings_manager.h"
 
 SettingsManager::SettingsManager(const QString& organization, const QString& application, QObject* parent) :
-    QObject(parent)
-{
-    settings_ = new QSettings(
-        QSettings::NativeFormat,
-        QSettings::UserScope,
-        organization,
-        application,
-        this
-    );
-}
+    QObject(parent),
+    settings_(QSettings(QSettings::NativeFormat, QSettings::UserScope, organization, application, this))
+{}
 
 void SettingsManager::writeSetting(const QString& key, const QVariant& value)
 {
     QMutexLocker<QMutex> locker(&mtx_);
-    settings_->setValue(key, value);
-    settings_->sync();
+    settings_.setValue(key, value);
+    settings_.sync();
 }
 
 void SettingsManager::writeSettings(const QVariantMap& settings)
@@ -26,42 +19,41 @@ void SettingsManager::writeSettings(const QVariantMap& settings)
     while (it.hasNext())
     {
         it.next();
-        settings_->setValue(it.key(), it.value());
+        settings_.setValue(it.key(), it.value());
     }
-    settings_->sync();
+    settings_.sync();
 }
 
 QVariant SettingsManager::readSetting(const QString& key, const QVariant& defaultValue)
 {
     QMutexLocker<QMutex> locker(&mtx_);
-    return settings_->value(key, defaultValue);
+    return settings_.value(key, defaultValue);
 }
 
 QVariantMap SettingsManager::readSettings()
 {
     QVariantMap settings;
     QMutexLocker<QMutex> locker(&mtx_);
-    QStringList keys = settings_->allKeys();
+    QStringList keys = settings_.allKeys();
     for (const auto& key : keys)
-        settings[key] = settings_->value(key);
+        settings[key] = settings_.value(key);
     return settings;
 }
 
 void SettingsManager::removeSetting(const QString& key)
 {
     QMutexLocker<QMutex> locker(&mtx_);
-    settings_->remove(key);
+    settings_.remove(key);
 }
 
 void SettingsManager::clearSettings()
 {
     QMutexLocker<QMutex> locker(&mtx_);
-    settings_->clear();
+    settings_.clear();
 }
 
 bool SettingsManager::has(const QString& key)
 {
     QMutexLocker<QMutex> locker(&mtx_);
-    return settings_->contains(key);
+    return settings_.contains(key);
 }
-

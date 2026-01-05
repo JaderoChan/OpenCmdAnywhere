@@ -1,5 +1,6 @@
 #pragma once
 
+#include <qapplication.h>
 #include <qmutex.h>
 #include <qobject.h>
 #include <qstring.h>
@@ -10,7 +11,11 @@
 class SettingsManager : public QObject
 {
 public:
-    SettingsManager(const QString& organization, const QString& application, QObject* parent = nullptr);
+    SettingsManager(
+        const QString& organization = QApplication::organizationName(),
+        const QString& application = QApplication::applicationName(),
+        QObject* parent = nullptr
+    );
 
     void writeSetting(const QString& key, const QVariant& value);
     void writeSettings(const QVariantMap& settings);
@@ -25,5 +30,5 @@ public:
 
 private:
     mutable QMutex mtx_;
-    QSettings* settings_ = nullptr;
+    QSettings settings_;
 };

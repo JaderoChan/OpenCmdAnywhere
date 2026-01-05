@@ -6,7 +6,6 @@
 #include "config.h"
 
 Settings::Settings()
-    : sm_(QApplication::organizationName(), QApplication::applicationName())
 {
     QMutexLocker<QMutex> locker(&mtx_);
     executables_ = sm_.readSetting(
