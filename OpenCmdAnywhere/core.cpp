@@ -227,7 +227,7 @@ bool runExecutable(
 {
     SHELLEXECUTEINFOW sei = {0};
     sei.cbSize = sizeof(sei);
-    sei.fMask = SEE_MASK_DOENVSUBST;
+    sei.fMask = SEE_MASK_DOENVSUBST | SEE_MASK_FLAG_LOG_USAGE;
     sei.lpVerb = isAdmin ? L"runas" : L"open";
     sei.lpFile = exeFilename.c_str();
     sei.lpParameters = parameter.c_str();
