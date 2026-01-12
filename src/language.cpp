@@ -2,7 +2,6 @@
 
 #include <qapplication.h>
 #include <qevent.h>
-#include <qstring>
 
 #include <easy_translate.hpp>
 #include <minilog.hpp>
