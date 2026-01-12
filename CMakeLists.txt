@@ -33,4 +33,4 @@ message(STATUS "Start configure the Global Hotkey library...")
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/FetchGlobalHotkey.cmake)
 message(STATUS "Success to configure the Global Hotkey library.")
 
-add_subdirectory(OpenCmdAnywhere)
+add_subdirectory(src)

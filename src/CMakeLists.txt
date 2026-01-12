@@ -12,7 +12,7 @@ set(PROJECT_SOURCE ${HEADER} ${SRC} ${UI} ${QRC})
 qt_standard_project_setup()
 qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCE})
 
-set(APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/icon/icon.ico")
+set(APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/icons/icon.ico")
 if(WIN32)
     set(RC_FILE "${CMAKE_CURRENT_BINARY_DIR}/app_icon.rc")
     file(WRITE ${RC_FILE} "IDI_ICON1 ICON \"${APP_ICON}\"")
@@ -53,4 +53,4 @@ target_compile_definitions(
 
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY language DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(DIRECTORY languages DESTINATION ${CMAKE_INSTALL_BINDIR})

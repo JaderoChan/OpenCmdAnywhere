@@ -14,7 +14,7 @@
 #include "settings_dialog.h"
 
 SystemTray::SystemTray(QObject* parent) :
-    QSystemTrayIcon(QIcon(":/icon/icon.ico"), parent),
+    QSystemTrayIcon(QIcon(":/icons/icon.ico"), parent),
     menu_(new QMenu())
 {
     setContextMenu(menu_);
@@ -164,7 +164,7 @@ void SystemTray::updateExecutableMenu()
 void SystemTray::setupLanguageMenu_()
 {
     languageMenu_ = new QMenu(menu_);
-    languageMenu_->setIcon(QIcon(":/icon/language.ico"));
+    languageMenu_->setIcon(QIcon(":/icons/language.ico"));
 
     auto languageGroup = new QActionGroup(menu_);
     languageGroup->setExclusive(true);
