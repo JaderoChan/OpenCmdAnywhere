@@ -22,6 +22,11 @@ elseif(APPLE)
     set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 endif()
 
+configure_file(
+    ${CMAKE_SOURCE_DIR}/cmake/template/config.h.in
+    ${CMAKE_BINARY_DIR}/include/config.h
+)
+
 target_include_directories(
     ${PROJECT_NAME} PRIVATE
     ${CMAKE_BINARY_DIR}/include

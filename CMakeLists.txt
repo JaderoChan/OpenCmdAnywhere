@@ -11,10 +11,6 @@ endif()
 set(OCAW_TITLE "Open CMD Anywhere")
 set(OCAW_ORGANIZATION "JaderoChan")
 set(OCAW_COPYRIGHT_TEXT "Copyright © 2025 JaderoChan")
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/template/config.h.in
-    ${CMAKE_BINARY_DIR}/include/config.h
-)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(ARCH_SUFFIX "x64")
