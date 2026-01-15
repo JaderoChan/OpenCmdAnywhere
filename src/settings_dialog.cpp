@@ -24,9 +24,9 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
 
     connect(this, &SettingsDialog::executablesChanged, this, &SettingsDialog::updateExecutablesTable);
     connect(ui.parameterEdit, &QTextEdit::textChanged, this, &SettingsDialog::onParameterTextChanged);
-    connect(ui.runAsUserHotkeyEdit, &KeyCombinationInputer::inputFinished, this, [=](QKeyCombination kc)
+    connect(ui.runAsUserHotkeyEdit, &KeyCombinationInputer::keyCombinationChanged, this, [=](QKeyCombination kc)
     { onHotkeyChanged(kc, false); });
-    connect(ui.runAsAdminHotkeyEdit, &KeyCombinationInputer::inputFinished, this, [=](QKeyCombination kc)
+    connect(ui.runAsAdminHotkeyEdit, &KeyCombinationInputer::keyCombinationChanged, this, [=](QKeyCombination kc)
     { onHotkeyChanged(kc, true); });
     connect(ui.addExeBtn, &QPushButton::clicked, this, &SettingsDialog::onAddExeBtnClicked);
     connect(ui.editExeBtn, &QPushButton::clicked, this, &SettingsDialog::onEditExeBtnClicked);

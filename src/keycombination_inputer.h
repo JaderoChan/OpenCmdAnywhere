@@ -13,8 +13,13 @@ class KeyCombinationInputer : public QLineEdit
 public:
     explicit KeyCombinationInputer(QWidget* parent = nullptr);
 
+    QKeyCombination keyCombination() const;
+
     /// @brief 设置还未获得组合键时的文本，默认为"..."。
     void setWaitingText(const QString& text);
+
+    /// @brief 设置空组合键时显示的文本，默认为"-"。
+    void setNoneKeyCombinationText(const QString& text);
 
     void setKeyCombination(const QKeyCombination& keyCombination);
 
@@ -23,15 +28,11 @@ public:
     /// @note 如果序列中的组合键数量大于1，则取第一个组合键。
     void setKeyCombination(const QKeySequence& keySequence);
 
-    QKeyCombination keyCombination() const;
-
 signals:
-    void inputFinished(QKeyCombination keyCombination);
+    void keyCombinationChanged(QKeyCombination keyCombination);
 
 protected:
     static bool isVaild(int key, Qt::KeyboardModifiers mod);
-
-    virtual void updateText();
 
     // 如果获得焦点，则进入组合键的输入状态。
     void focusInEvent(QFocusEvent* event) override;
@@ -48,7 +49,10 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 
 private:
-    QKeyCombination keyq_;
+    void updateText();
+
+    QKeyCombination kc_;
     QString waitingText_    = "...";
-    bool isWaitInput_       = false;
+    QString noneKcText_     = "-";
+    bool isWaitingInput_    = false;
 };
