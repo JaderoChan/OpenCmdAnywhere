@@ -25,14 +25,14 @@ public:
 
     /// @overload
     /// @note 如果序列为空，则将组合键也设置为空。
-    /// @note 如果序列中的组合键数量大于1，则取第一个组合键。
+    /// @note 如果序列中的组合键数量大于1，则设置为序列中的第一个组合键。
     void setKeyCombination(const QKeySequence& keySequence);
 
 signals:
     void keyCombinationChanged(QKeyCombination keyCombination);
 
 protected:
-    static bool isVaild(int key, Qt::KeyboardModifiers mod);
+    virtual bool isVaild(int key, Qt::KeyboardModifiers mod);
 
     // 如果获得焦点，则进入组合键的输入状态。
     void focusInEvent(QFocusEvent* event) override;

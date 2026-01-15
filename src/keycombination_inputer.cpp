@@ -72,11 +72,6 @@ bool KeyCombinationInputer::isVaild(int key, Qt::KeyboardModifiers mod)
     return keyIsValid && modIsValid;
 }
 
-void KeyCombinationInputer::updateText()
-{
-    isWaitingInput_ ? setText(waitingText_) : setText(QKeySequence(kc_).toString());
-}
-
 void KeyCombinationInputer::focusInEvent(QFocusEvent* event)
 {
     QLineEdit::focusInEvent(event);
@@ -136,4 +131,9 @@ void KeyCombinationInputer::mouseMoveEvent(QMouseEvent* event)
 void KeyCombinationInputer::mouseDoubleClickEvent(QMouseEvent* event)
 {
     event->ignore();
+}
+
+void KeyCombinationInputer::updateText()
+{
+    isWaitingInput_ ? setText(waitingText_) : setText(QKeySequence(kc_).toString());
 }
