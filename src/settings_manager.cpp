@@ -2,7 +2,7 @@
 
 SettingsManager::SettingsManager(const QString& organization, const QString& application, QObject* parent) :
     QObject(parent),
-    settings_(QSettings(QSettings::NativeFormat, QSettings::UserScope, organization, application, this))
+    settings_(QSettings::NativeFormat, QSettings::UserScope, organization, application, this)
 {}
 
 void SettingsManager::writeSetting(const QString& key, const QVariant& value)
