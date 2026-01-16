@@ -50,6 +50,9 @@ set_target_properties(
     OUTPUT_NAME "${PROJECT_NAME}-${PROJECT_VERSION}-${ARCH_SUFFIX}"
 )
 
+option(OCAW_OUTLOG "Whether output the log" OFF)
+option(UPDATE_TRANSLATIONS_FILES "Whether update the tarnslations files" OFF)
+
 target_compile_definitions(
     ${PROJECT_NAME} PRIVATE
     $<$<BOOL:UPDATE_TRANSLATIONS_FILES>:EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES>

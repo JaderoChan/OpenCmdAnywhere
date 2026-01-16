@@ -18,9 +18,6 @@ else()
     set(ARCH_SUFFIX "x86")
 endif()
 
-option(OCAW_OUTLOG "Whether output the log" OFF)
-option(UPDATE_TRANSLATIONS_FILES "Whether update the tarnslations files" OFF)
-
 set(3RDPARTY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 set(json_SOURCE_DIR ${3RDPARTY}/json)
 set(easy_translate_SOURCE_DIR ${3RDPARTY}/easy_translate)
