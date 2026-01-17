@@ -24,12 +24,12 @@ endif()
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/cmake/template/config.h.in
-    ${CMAKE_BINARY_DIR}/include/config.h
+    ${CMAKE_CURRENT_BINARY_DIR}/include/config.h
 )
 
 target_include_directories(
     ${PROJECT_NAME} PRIVATE
-    ${CMAKE_BINARY_DIR}/include
+    ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${json_SOURCE_DIR}/include
     ${easy_translate_SOURCE_DIR}/include
