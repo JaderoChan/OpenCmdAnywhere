@@ -16,7 +16,7 @@ bool setRunOnStartup(bool enable)
         "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
         QSettings::NativeFormat);
     QString appName = QCoreApplication::applicationName();
-    QString appPath = QDir::toNativeSeparators(QCoreApplication::applicationFilePath());
+    QString appPath = "\"" + QDir::toNativeSeparators(QCoreApplication::applicationFilePath()) + "\"";
     if (enable)
         settings.setValue(appName, appPath);
     else
