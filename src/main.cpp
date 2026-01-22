@@ -10,6 +10,7 @@
 #include "language.h"
 #include "settings.h"
 #include "systemtray.h"
+#include "utility.h"
 
 int main(int argc, char* argv[])
 {
@@ -33,6 +34,8 @@ int main(int argc, char* argv[])
     auto kc = Settings::getKeyCombination();
     kc = HotkeyHandler::setHotkey(kc);
     Settings::setKeyCombination(kc);
+
+    setRunOnStartup(Settings::getIsRunOnStartup());
 
     SystemTray st;
     st.show();

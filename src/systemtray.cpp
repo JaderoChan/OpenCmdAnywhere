@@ -29,7 +29,7 @@ SystemTray::SystemTray(QObject* parent) :
 
     runOnStartup_ = new QAction(menu_);
     runOnStartup_->setCheckable(true);
-    runOnStartup_->setChecked(isRunOnStartup());
+    runOnStartup_->setChecked(Settings::getIsRunOnStartup());
     menu_->addAction(runOnStartup_);
     menu_->addSeparator();
 
@@ -94,9 +94,11 @@ void SystemTray::onActivated(ActivationReason reason)
 
 void SystemTray::onRunOnStartupTriggered()
 {
-    bool ret = setRunOnStartup(runOnStartup_->isChecked());
+    bool runOnStartup = runOnStartup_->isChecked();
+    bool ret = setRunOnStartup(runOnStartup);
     if (!ret)
         mlog::warning("Failed to set to run on startup");
+    Settings::setIsRunOnStartup(runOnStartup);
 }
 
 void SystemTray::onSettingTriggered()
