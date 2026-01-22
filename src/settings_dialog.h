@@ -22,7 +22,7 @@ protected:
     void updateExecutablesTable();
 
     void onParameterTextChanged();
-    void onHotkeyChanged(QKeyCombination kc, bool isAdmin);
+    void onHotkeyChanged(QKeyCombination kc);
     void onAddExeBtnClicked();
     void onEditExeBtnClicked();
     void onRemoveExeBtnClicked();

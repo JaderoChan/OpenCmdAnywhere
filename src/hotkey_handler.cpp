@@ -30,10 +30,10 @@ HotkeyHandler& HotkeyHandler::getInstance()
     return instance;
 }
 
-gbhk::KeyCombination HotkeyHandler::setHotkey(const gbhk::KeyCombination& kc, bool isAdmin)
+gbhk::KeyCombination HotkeyHandler::setHotkey(const gbhk::KeyCombination& kc)
 {
     auto& instance = getInstance();
-    auto& hotkey = isAdmin ? instance.hotkeyAsUserRun_ : instance.hotkeyAsAdminRun_;
+    auto& hotkey = getInstance().hotkey_;
 
     if (!kc.isValid())
     {
@@ -64,7 +64,7 @@ gbhk::KeyCombination HotkeyHandler::setHotkey(const gbhk::KeyCombination& kc, bo
         else
         {
             mlog::info("Due to the original hotkey is invalid and setHotkey() got a valid hotkey so add the new hotkey");
-            int rc = instance.ghm_.add(kc, [=]() { hotkeyTriggered(isAdmin); });
+            int rc = instance.ghm_.add(kc, [=]() { hotkeyTriggered(); });
             if (rc == gbhk::RC_SUCCESS)
                 hotkey = kc;
             if (rc != gbhk::RC_SUCCESS)
@@ -75,7 +75,7 @@ gbhk::KeyCombination HotkeyHandler::setHotkey(const gbhk::KeyCombination& kc, bo
     return hotkey;
 }
 
-void HotkeyHandler::hotkeyTriggered(bool isAdmin)
+void HotkeyHandler::hotkeyTriggered()
 {
     std::thread th([=]()
     {
@@ -90,7 +90,7 @@ void HotkeyHandler::hotkeyTriggered(bool isAdmin)
         try
         {
             auto path = getFocusedWindowDirectory();
-            if (!runExecutable(executable, path, parameter, isAdmin))
+            if (!runExecutable(executable, path, parameter))
                 throw std::runtime_error("Failed to run the executable");
         }
         catch (std::exception& e)

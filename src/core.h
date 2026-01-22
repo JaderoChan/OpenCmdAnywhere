@@ -13,6 +13,5 @@ std::wstring getFocusedWindowDirectory();
 bool runExecutable(
     const std::wstring& exeFilename,
     const std::wstring& workDirectory,
-    const std::wstring& parameter,
-    bool isAdmin
+    const std::wstring& parameter
 );

@@ -9,10 +9,10 @@ public:
     static HotkeyHandler& getInstance();
 
     // 如果指定了一个无效KeyCombination则删除此热键。返回设置的热键，如果设置失败或指定了无效KeyCombination则返回无效KeyCombination。
-    static gbhk::KeyCombination setHotkey(const gbhk::KeyCombination& kc, bool isAdmin);
+    static gbhk::KeyCombination setHotkey(const gbhk::KeyCombination& kc);
 
 protected:
-    static void hotkeyTriggered(bool isAdmin);
+    static void hotkeyTriggered();
 
 private:
     HotkeyHandler();
@@ -21,6 +21,5 @@ private:
     HotkeyHandler& operator=(const HotkeyHandler&) = delete;
 
     gbhk::GlobalHotkeyManager& ghm_;
-    gbhk::KeyCombination hotkeyAsUserRun_;
-    gbhk::KeyCombination hotkeyAsAdminRun_;
+    gbhk::KeyCombination hotkey_;
 };

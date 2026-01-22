@@ -16,5 +16,4 @@
 #define COMMAND_EXE                 "C:/Windows/System32/cmd.exe"
 #define POWER_SHELL_EXE             "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
 
-#define RUN_AS_USER_HOTKEY  "Alt+T"
-#define RUN_AS_ADMIN_HOTKEY "Alt+Shift+T"
+#define DEFAULT_HOTKEY  "Alt+T"

@@ -30,12 +30,9 @@ int main(int argc, char* argv[])
     langId = setLanguage(langId);
     Settings::setLanguage(langId);
 
-    auto runAsUserKc = Settings::getKeyCombination(false);
-    auto runAsAdminKc = Settings::getKeyCombination(true);
-    runAsUserKc = HotkeyHandler::setHotkey(runAsUserKc, false);
-    runAsAdminKc = HotkeyHandler::setHotkey(runAsAdminKc, true);
-    Settings::setKeyCombination(runAsUserKc, false);
-    Settings::setKeyCombination(runAsAdminKc, true);
+    auto kc = Settings::getKeyCombination();
+    kc = HotkeyHandler::setHotkey(kc);
+    Settings::setKeyCombination(kc);
 
     SystemTray st;
     st.show();

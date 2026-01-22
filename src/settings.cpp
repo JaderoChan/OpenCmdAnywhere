@@ -45,20 +45,11 @@ QString Settings::getParameter()
     return getInstance().sm_.readSetting("Parameter", "").toString();
 }
 
-gbhk::KeyCombination Settings::getKeyCombination(bool isAdmin)
+gbhk::KeyCombination Settings::getKeyCombination()
 {
-    if (isAdmin)
-    {
-        QString kcStr =
-            getInstance().sm_.readSetting("RunAsAdminHotkey", RUN_AS_ADMIN_HOTKEY).toString();
-        return gbhk::KeyCombination::fromString(kcStr.toStdString());
-    }
-    else
-    {
-        QString kcStr =
-            getInstance().sm_.readSetting("RunAsUserHotkey", RUN_AS_USER_HOTKEY).toString();
-        return gbhk::KeyCombination::fromString(kcStr.toStdString());
-    }
+    QString kcStr =
+        getInstance().sm_.readSetting("Hotkey", DEFAULT_HOTKEY).toString();
+    return gbhk::KeyCombination::fromString(kcStr.toStdString());
 }
 
 bool Settings::getIsRunOnStartup()
@@ -84,14 +75,11 @@ void Settings::setParameter(const QString& value)
         getInstance().sm_.writeSetting("Parameter", value);
 }
 
-void Settings::setKeyCombination(const gbhk::KeyCombination& value, bool isAdmin)
+void Settings::setKeyCombination(const gbhk::KeyCombination& value)
 {
     QString kcStr = QString::fromStdString(value.toString());
     auto& sm = getInstance().sm_;
-    if (isAdmin)
-        sm.writeSetting("RunAsAdminHotkey", kcStr);
-    else
-        sm.writeSetting("RunAsUserHotkey", kcStr);
+    sm.writeSetting("Hotkey", kcStr);
 }
 
 void Settings::setIsRunOnStartup(bool value)

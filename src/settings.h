@@ -19,13 +19,13 @@ public:
     static std::pair<QString, QString> getCurrentExecutable();
     // The return value may be empty.
     static QString getParameter();
-    static gbhk::KeyCombination getKeyCombination(bool isAdmin);
+    static gbhk::KeyCombination getKeyCombination();
     static bool getIsRunOnStartup();
 
     static void setLanguage(const QString& value);
     static void setCurrentExecutable(const QString& value);
     static void setParameter(const QString& value);
-    static void setKeyCombination(const gbhk::KeyCombination& value, bool isAdmin);
+    static void setKeyCombination(const gbhk::KeyCombination& value);
     static void setIsRunOnStartup(bool value);
 
     // Return: <display name : executable filename>

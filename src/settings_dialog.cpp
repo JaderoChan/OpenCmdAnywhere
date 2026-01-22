@@ -15,19 +15,15 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
     ui.setupUi(this);
 
     ui.parameterEdit->setText(Settings::getParameter());
-    auto runAsUserHotkey = Settings::getKeyCombination(false);
-    ui.runAsUserHotkeyEdit->setKeyCombination(QKeySequence::fromString(runAsUserHotkey.toString().c_str()));
-    auto runAsAdminHotkey = Settings::getKeyCombination(true);
-    ui.runAsAdminHotkeyEdit->setKeyCombination(QKeySequence::fromString(runAsAdminHotkey.toString().c_str()));
+    auto hotkey = Settings::getKeyCombination();
+    ui.hotkeyEdit->setKeyCombination(QKeySequence::fromString(hotkey.toString().c_str()));
     ui.executableTable->setColumnCount(2);
     ui.executableTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 
     connect(this, &SettingsDialog::executablesChanged, this, &SettingsDialog::updateExecutablesTable);
     connect(ui.parameterEdit, &QTextEdit::textChanged, this, &SettingsDialog::onParameterTextChanged);
-    connect(ui.runAsUserHotkeyEdit, &KeyCombinationInputer::keyCombinationChanged, this, [=](QKeyCombination kc)
-    { onHotkeyChanged(kc, false); });
-    connect(ui.runAsAdminHotkeyEdit, &KeyCombinationInputer::keyCombinationChanged, this, [=](QKeyCombination kc)
-    { onHotkeyChanged(kc, true); });
+    connect(ui.hotkeyEdit, &KeyCombinationInputer::keyCombinationChanged, this, [=](QKeyCombination kc)
+    { onHotkeyChanged(kc); });
     connect(ui.addExeBtn, &QPushButton::clicked, this, &SettingsDialog::onAddExeBtnClicked);
     connect(ui.editExeBtn, &QPushButton::clicked, this, &SettingsDialog::onEditExeBtnClicked);
     connect(ui.removeExeBtn, &QPushButton::clicked, this, &SettingsDialog::onRemoveExeBtnClicked);
@@ -41,10 +37,8 @@ void SettingsDialog::updatetText()
     setWindowTitle(EASYTR("Setting"));
     ui.parameterLbl->setText(EASYTR("Startup Parameter"));
     ui.parameterEdit->setPlaceholderText(EASYTR("No Parameter"));
-    ui.runAsUserHotkeyLbl->setText(EASYTR("Run As User Hotkey"));
-    ui.runAsUserHotkeyEdit->setToolTip(EASYTR("Keying the 'ESC' to cancel and keying the 'Delete' to remove hotkey"));
-    ui.runAsAdminHotkeyLbl->setText(EASYTR("Run As Admin Hotkey"));
-    ui.runAsAdminHotkeyEdit->setToolTip(EASYTR("Keying the 'ESC' to cancel and keying the 'Delete' to remove hotkey"));
+    ui.hotkeyLbl->setText(EASYTR("Run Hotkey"));
+    ui.hotkeyEdit->setToolTip(EASYTR("Keying the 'ESC' to cancel and keying the 'Delete' to remove hotkey"));
     ui.addExeBtn->setText(EASYTR("Add Executable"));
     ui.editExeBtn->setText(EASYTR("Edit Executable"));
     ui.removeExeBtn->setText(EASYTR("Remove Executable"));
@@ -79,20 +73,17 @@ void SettingsDialog::onParameterTextChanged()
     Settings::setParameter(ui.parameterEdit->toPlainText());
 }
 
-void SettingsDialog::onHotkeyChanged(QKeyCombination kc, bool isAdmin)
+void SettingsDialog::onHotkeyChanged(QKeyCombination kc)
 {
     auto kcStr = QKeySequence(kc).toString();
     auto gbhkKc = gbhk::KeyCombination::fromString(kcStr.toStdString());
     // 尝试设置热键，并获取返回结果。
-    gbhkKc = HotkeyHandler::setHotkey(gbhkKc, isAdmin);
-    Settings::setKeyCombination(gbhkKc, isAdmin);
+    gbhkKc = HotkeyHandler::setHotkey(gbhkKc);
+    Settings::setKeyCombination(gbhkKc);
     kcStr = QString::fromStdString(gbhkKc.toString());
     auto ks = QKeySequence::fromString(kcStr);
     // 更新热键（如果热键设置失败，上面将会返回空热键，也就回退至未设置热键的情况）
-    if (isAdmin)
-        ui.runAsAdminHotkeyEdit->setKeyCombination(ks);
-    else
-        ui.runAsUserHotkeyEdit->setKeyCombination(ks);
+    ui.hotkeyEdit->setKeyCombination(ks);
 }
 
 void SettingsDialog::onAddExeBtnClicked()
