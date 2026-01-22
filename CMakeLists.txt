@@ -26,4 +26,6 @@ message(STATUS "Start configure the Global Hotkey library...")
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/FetchGlobalHotkey.cmake)
 message(STATUS "Success to configure the Global Hotkey library.")
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE})
+
 add_subdirectory(src)

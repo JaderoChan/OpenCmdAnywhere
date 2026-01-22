@@ -59,6 +59,12 @@ target_compile_definitions(
     $<$<BOOL:OCAW_OUTLOG>:OCAW_OUTLOG>
 )
 
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_CURRENT_SOURCE_DIR}/languages ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/languages
+)
+
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY languages DESTINATION ${CMAKE_INSTALL_BINDIR})
