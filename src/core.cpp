@@ -6,6 +6,7 @@
 #include <psapi.h>
 #include <shobjidl.h>
 #include <shlobj.h>
+#include <userenv.h>
 
 std::wstring getWindowExePath(HWND window)
 {
@@ -225,13 +226,44 @@ bool runExecutable(
     const std::wstring& parameter,
     bool isAdmin)
 {
-    SHELLEXECUTEINFOW sei = {0};
-    sei.cbSize = sizeof(sei);
-    sei.fMask = SEE_MASK_DOENVSUBST | SEE_MASK_FLAG_LOG_USAGE;
-    sei.lpVerb = isAdmin ? L"runas" : L"open";
-    sei.lpFile = exeFilename.c_str();
-    sei.lpParameters = parameter.c_str();
-    sei.lpDirectory = workDirectory.c_str();
-    sei.nShow = SW_SHOW;
-    return ShellExecuteExW(&sei);
+    std::wstring cmdLine = L"\"" + exeFilename + L"\"";
+    if (!parameter.empty())
+        cmdLine += (L" " + parameter);
+
+    DWORD dwCreationFlags = 0;
+    LPVOID lpEnvironment = NULL;
+    if (CreateEnvironmentBlock(&lpEnvironment, NULL, FALSE))
+        dwCreationFlags |= CREATE_UNICODE_ENVIRONMENT;
+    else
+        lpEnvironment = NULL;
+
+    dwCreationFlags |= (CREATE_NEW_CONSOLE | CREATE_DEFAULT_ERROR_MODE | NORMAL_PRIORITY_CLASS);
+
+    STARTUPINFOW si = {0};
+    si.cb = sizeof(si);
+    PROCESS_INFORMATION pi = {0};
+
+    BOOL res = CreateProcessW(
+        NULL,
+        cmdLine.data(),
+        NULL,
+        NULL,
+        FALSE,
+        dwCreationFlags,
+        lpEnvironment,
+        workDirectory.c_str(),
+        &si,
+        &pi
+    );
+
+    if (res)
+    {
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
+    }
+
+    if (lpEnvironment)
+        DestroyEnvironmentBlock(lpEnvironment);
+
+    return res;
 }

@@ -2,6 +2,8 @@
 
 #include <thread>
 
+#include <qdir.h>
+
 #include <minilog.hpp>
 
 #include "settings.h"
@@ -77,7 +79,7 @@ void HotkeyHandler::hotkeyTriggered(bool isAdmin)
 {
     std::thread th([=]()
     {
-        auto executable = Settings::getCurrentExecutable().second.toStdWString();
+        auto executable = QDir::toNativeSeparators(Settings::getCurrentExecutable().second).toStdWString();
         auto parameter = Settings::getParameter().toStdWString();
         if (executable.empty())
         {
@@ -90,7 +92,8 @@ void HotkeyHandler::hotkeyTriggered(bool isAdmin)
             auto path = getFocusedWindowDirectory();
             if (!runExecutable(executable, path, parameter, isAdmin))
                 throw std::runtime_error("Failed to run the executable");
-        } catch (std::exception& e)
+        }
+        catch (std::exception& e)
         {
             mlog::warning("Error occurred when run the getFocusedWindowDirectory() and runExecutable(), exception: {}", e.what());
         }
