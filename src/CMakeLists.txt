@@ -47,7 +47,6 @@ set_target_properties(
     AUTOUIC ON
     AUTORCC ON
     WIN32_EXECUTABLE TRUE
-    OUTPUT_NAME "${PROJECT_NAME}-${PROJECT_VERSION}-${ARCH_SUFFIX}"
 )
 
 option(OCAW_OUTLOG "Whether output the log" OFF)

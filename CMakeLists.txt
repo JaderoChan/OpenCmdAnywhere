@@ -12,12 +12,6 @@ set(OCAW_TITLE "Open CMD Anywhere")
 set(OCAW_ORGANIZATION "JaderoChan")
 set(OCAW_COPYRIGHT_TEXT "Copyright © 2025 JaderoChan")
 
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(ARCH_SUFFIX "x64")
-else()
-    set(ARCH_SUFFIX "x86")
-endif()
-
 set(3RDPARTY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 set(json_SOURCE_DIR ${3RDPARTY}/json)
 set(easy_translate_SOURCE_DIR ${3RDPARTY}/easy_translate)
