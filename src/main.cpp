@@ -35,7 +35,8 @@ int main(int argc, char* argv[])
     kc = HotkeyHandler::setHotkey(kc);
     Settings::setKeyCombination(kc);
 
-    setRunOnStartup(Settings::getIsRunOnStartup());
+    if (Settings::getIsRunOnStartup() != isRunOnStartup())
+        setRunOnStartup(Settings::getIsRunOnStartup());
 
     SystemTray st;
     st.show();
