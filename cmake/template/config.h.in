@@ -8,7 +8,6 @@
 #define APP_VERSION_PATCH   @PROJECT_VERSION_PATCH@
 #define APP_COPYRIGHT_TEXT  "@OCAW_COPYRIGHT_TEXT@"
 
-#define APP_LANG_FILENAME   "languages/languages.json"
 #define APP_LOCK_FILENAME   ".Lock-@OCAW_TITLE@-c5932713-13c6-44ed-bbe8-faa0be818e71"
 
 #define COMMAND_DISPLAY_NAME        "CMD"

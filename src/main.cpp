@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
     a.setApplicationName(APP_TITLE);
     a.setQuitOnLastWindowClosed(false);
 
+    initLanguage();
     auto langId = Settings::getLangugae();
     langId = setLanguage(langId);
     Settings::setLanguage(langId);

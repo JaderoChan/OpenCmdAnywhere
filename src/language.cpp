@@ -8,12 +8,16 @@
 
 #include "config.h"
 
+void initLanguage()
+{
+    easytr::Languages langs;
+    langs.add("EN", (QApplication::applicationDirPath() + "/languages/en.json").toStdString());
+    langs.add("ZH", (QApplication::applicationDirPath() + "/languages/zh.json").toStdString());
+    easytr::setLanguages(langs);
+}
+
 QString setLanguage(const QString& langId)
 {
-    easytr::setLanguages(APP_LANG_FILENAME);
-    if (easytr::languages().empty())
-        mlog::info("Invalid or empty Languages file");
-
     std::string id = langId.toStdString();
     if (easytr::hasLanguage(id))
     {
@@ -26,19 +30,11 @@ QString setLanguage(const QString& langId)
     else
     {
         mlog::info("Expected language is missing, try fall back to the default language");
-        if (easytr::languages().empty())
-        {
-            mlog::warning("Not find any language");
-            return easytr::currentLanguage();
-        }
+        id = easytr::languages().getIds().front();
+        if (easytr::setCurrentLanguage(id))
+            mlog::info("Successfully fall back to language: {}", id.c_str());
         else
-        {
-            id = easytr::languages().getIds().front();
-            if (easytr::setCurrentLanguage(id))
-                mlog::info("Successfully fall back to language: {}", id.c_str());
-            else
-                mlog::warning("Failed to fall back to language: {}", id.c_str());
-        }
+            mlog::warning("Failed to fall back to language: {}", id.c_str());
     }
 
     QEvent event(QEvent::Type::LanguageChange);
