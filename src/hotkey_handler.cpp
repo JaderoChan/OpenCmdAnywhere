@@ -14,14 +14,14 @@ HotkeyHandler::HotkeyHandler() :
 {
     int rc = ghm_.initialize();
     if (rc != gbhk::RC_SUCCESS)
-        mlog::warning("Failed to initialize the Global Hotkey Manager, message: {}", gbhk::getReturnCodeMsg(rc));
+        mlog::warning("Failed to initialize the Global Hotkey Manager, message: {}", gbhk::getReturnCodeMessage(rc));
 }
 
 HotkeyHandler::~HotkeyHandler()
 {
     int rc = ghm_.uninitialize();
     if (rc != gbhk::RC_SUCCESS)
-        mlog::warning("Failed to uninitialize the Global Hotkey Manager, message: {}", gbhk::getReturnCodeMsg(rc));
+        mlog::warning("Failed to uninitialize the Global Hotkey Manager, message: {}", gbhk::getReturnCodeMessage(rc));
 }
 
 HotkeyHandler& HotkeyHandler::getInstance()
@@ -44,7 +44,7 @@ gbhk::KeyCombination HotkeyHandler::setHotkey(const gbhk::KeyCombination& kc)
             int rc = instance.ghm_.remove(hotkey);
             hotkey = {};
             if (rc != gbhk::RC_SUCCESS)
-                mlog::warning("Failed to remove the hotkey, message: {}", gbhk::getReturnCodeMsg(rc));
+                mlog::warning("Failed to remove the hotkey, message: {}", gbhk::getReturnCodeMessage(rc));
         }
     }
     else
@@ -59,7 +59,7 @@ gbhk::KeyCombination HotkeyHandler::setHotkey(const gbhk::KeyCombination& kc)
             else
                 hotkey = kc;
             if (rc != gbhk::RC_SUCCESS)
-                mlog::warning("Failed to replace the hotkey, message: {}", gbhk::getReturnCodeMsg(rc));
+                mlog::warning("Failed to replace the hotkey, message: {}", gbhk::getReturnCodeMessage(rc));
         }
         else
         {
@@ -68,7 +68,7 @@ gbhk::KeyCombination HotkeyHandler::setHotkey(const gbhk::KeyCombination& kc)
             if (rc == gbhk::RC_SUCCESS)
                 hotkey = kc;
             if (rc != gbhk::RC_SUCCESS)
-                mlog::warning("Failed to add the hotkey, message: {}", gbhk::getReturnCodeMsg(rc));
+                mlog::warning("Failed to add the hotkey, message: {}", gbhk::getReturnCodeMessage(rc));
         }
     }
 
