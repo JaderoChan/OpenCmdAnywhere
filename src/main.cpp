@@ -39,7 +39,6 @@ int main(int argc, char* argv[])
         setRunOnStartup(Settings::getIsRunOnStartup());
 
     SystemTray st;
-    st.show();
     a.installEventFilter(&st);
 
     int ret = a.exec();

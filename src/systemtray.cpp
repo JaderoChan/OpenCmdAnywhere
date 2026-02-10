@@ -49,6 +49,7 @@ SystemTray::SystemTray(QObject* parent) :
     connect(about_, &QAction::triggered, this, &SystemTray::onAboutTriggered);
     connect(exitApp_, &QAction::triggered, this, &SystemTray::onExitAppTriggered);
 
+    show();
     updateText();
 }
 
