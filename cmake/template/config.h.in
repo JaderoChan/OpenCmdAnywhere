@@ -18,6 +18,6 @@
 
 // MacOS
 #define TERMINAL_DISPLAY_NAME      "Terminal"
-#define TERMINAL_EXE               "/Applications/Utilities/Terminal.app"
+#define TERMINAL_EXE               "/bin/zsh"
 
 #define DEFAULT_HOTKEY             "Alt+T"
