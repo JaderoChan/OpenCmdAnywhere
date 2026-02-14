@@ -101,7 +101,7 @@ QString getFrontWindowExeDir()
             if (ret > 0)
             {
                 auto path = std::filesystem::path(pathBuf).parent_path().string();
-                return QString(path);
+                return QString::fromStdString(path);
             }
             else
             {
