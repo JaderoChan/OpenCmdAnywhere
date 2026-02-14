@@ -11,7 +11,9 @@
 HotkeyHandler::HotkeyHandler() :
 #ifdef Q_OS_WIN
     ghm_(gbhk::RegisterGlobalHotkeyManager::getInstance())
-#else defined(Q_OS_MAC)
+#elif defined(Q_OS_MAC)
+    ghm_(gbhk::HookGlobalHotkeyManager::getInstance())
+#else
     ghm_(gbhk::HookGlobalHotkeyManager::getInstance())
 #endif
 {

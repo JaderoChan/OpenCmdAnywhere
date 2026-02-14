@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <stringlist.h>
+#include <qstringlist.h>
 
 #include <unistd.h>
 #include <sys/wait.h>
