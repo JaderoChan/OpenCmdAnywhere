@@ -58,7 +58,7 @@ gbhk::KeyCombination Settings::getKeyCombination()
 
 bool Settings::getIsAutoRunOnStartUp()
 {
-    return getInstance().sm_.readSetting("RunOnStartUp", false).toBool();
+    return getInstance().sm_.readSetting("AutoRunOnStartUp", false).toBool();
 }
 
 void Settings::setLanguage(const QString& value)
@@ -88,7 +88,7 @@ void Settings::setKeyCombination(const gbhk::KeyCombination& value)
 
 void Settings::setAutoRunOnStartUp(bool value)
 {
-    getInstance().sm_.writeSetting("RunOnStartUp", value);
+    getInstance().sm_.writeSetting("AutoRunOnStartUp", value);
 }
 
 QVariantMap Settings::getAllExecutables()
