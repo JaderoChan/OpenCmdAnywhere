@@ -108,5 +108,9 @@ QString getFrontWindowExeDir()
                 throw std::runtime_error("Failed to get executable path from front window PID");
             }
         }
+        else
+        {
+            throw std::runtime_error("Invalid front window PID");
+        }
     }
 }
