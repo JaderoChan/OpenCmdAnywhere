@@ -8,7 +8,6 @@
 - [global_hokety](https://github.com/JaderoChan/global_hotkey)：用于全局热键
 - [nlohmann/json](https://github.com/nlohmann/json)：`easy_translate`库的依赖
 - [easy_translate](https://github.com/JaderoChan/easy_translate)：用于界面翻译
-- [minlog](https://github.com/JaderoChan/minilog)：用于日志记录
 
 ## 平台
 

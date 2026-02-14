@@ -10,7 +10,11 @@ Settings::Settings()
     QMutexLocker<QMutex> locker(&mtx_);
     executables_ = sm_.readSetting(
         "Executables",
+    #ifdef Q_OS_WIN
         QVariantMap({{COMMAND_DISPLAY_NAME, COMMAND_EXE}, {POWER_SHELL_DISPLAY_NAME, POWER_SHELL_EXE}})
+    #else defined(Q_OS_MAC)
+        QVariantMap({{TERMINAL_DISPLAY_NAME, TERMINAL_EXE}})
+    #endif // Q_OS_WIN
     ).toMap();
 }
 
@@ -52,9 +56,9 @@ gbhk::KeyCombination Settings::getKeyCombination()
     return gbhk::KeyCombination::fromString(kcStr.toStdString());
 }
 
-bool Settings::getIsRunOnStartup()
+bool Settings::getIsAutoRunOnStartUp()
 {
-    return getInstance().sm_.readSetting("RunOnStartup", false).toBool();
+    return getInstance().sm_.readSetting("RunOnStartUp", false).toBool();
 }
 
 void Settings::setLanguage(const QString& value)
@@ -82,9 +86,9 @@ void Settings::setKeyCombination(const gbhk::KeyCombination& value)
     sm.writeSetting("Hotkey", kcStr);
 }
 
-void Settings::setIsRunOnStartup(bool value)
+void Settings::setAutoRunOnStartUp(bool value)
 {
-    getInstance().sm_.writeSetting("RunOnStartup", value);
+    getInstance().sm_.writeSetting("RunOnStartUp", value);
 }
 
 QVariantMap Settings::getAllExecutables()

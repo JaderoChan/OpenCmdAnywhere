@@ -4,24 +4,27 @@
 
 #include <qdir.h>
 
-#include <minilog.hpp>
-
 #include "settings.h"
-#include "core.h"
+#include "platforms/front_window_exedir_getter.h"
+#include "platforms/run_executable.h"
 
 HotkeyHandler::HotkeyHandler() :
+#ifdef Q_OS_WIN
     ghm_(gbhk::RegisterGlobalHotkeyManager::getInstance())
+#else defined(Q_OS_MAC)
+    ghm_(gbhk::HookGlobalHotkeyManager::getInstance())
+#endif
 {
-    int rc = ghm_.initialize();
+    int rc = ghm_.run();
     if (rc != gbhk::RC_SUCCESS)
-        mlog::warning("Failed to initialize the Global Hotkey Manager, message: {}", gbhk::getReturnCodeMessage(rc));
+        qDebug() << "Failed to run the Global Hotkey Manager, message:" << gbhk::getReturnCodeMessage(rc).c_str();
 }
 
 HotkeyHandler::~HotkeyHandler()
 {
-    int rc = ghm_.uninitialize();
+    int rc = ghm_.stop();
     if (rc != gbhk::RC_SUCCESS)
-        mlog::warning("Failed to uninitialize the Global Hotkey Manager, message: {}", gbhk::getReturnCodeMessage(rc));
+        qDebug() << "Failed to stop the Global Hotkey Manager, message:" << gbhk::getReturnCodeMessage(rc).c_str();
 }
 
 HotkeyHandler& HotkeyHandler::getInstance()
@@ -37,38 +40,38 @@ gbhk::KeyCombination HotkeyHandler::setHotkey(const gbhk::KeyCombination& kc)
 
     if (!kc.isValid())
     {
-        mlog::info("The setHotkey() got a invalid hotkey parameter");
+        qDebug() << "The setHotkey() got a invalid hotkey parameter";
         if (hotkey.isValid())
         {
-            mlog::info("Due to the original hotkey is valid and the setHotkey() got a invalid hotkey so remove the original hotkey");
-            int rc = instance.ghm_.remove(hotkey);
+            qDebug() << "Due to the original hotkey is valid and the setHotkey() got a invalid hotkey so unregister the original hotkey";
+            int rc = instance.ghm_.unregisterHotkey(hotkey);
             hotkey = {};
             if (rc != gbhk::RC_SUCCESS)
-                mlog::warning("Failed to remove the hotkey, message: {}", gbhk::getReturnCodeMessage(rc));
+                qDebug() << "Failed to unregister the hotkey, message:" << gbhk::getReturnCodeMessage(rc).c_str();
         }
     }
     else
     {
-        mlog::info("The setHotkey() got a valid hotkey parameter");
+        qDebug() << "The setHotkey() got a valid hotkey parameter";
         if (hotkey.isValid())
         {
-            mlog::info("Due to the original hotkey is valid and setHotkey() got a valid hotkey so replace the original hotkey to the new hotkey");
-            int rc = instance.ghm_.replace(hotkey, kc);
+            qDebug() << "Due to the original hotkey is valid and setHotkey() got a valid hotkey so replace the original hotkey to the new hotkey";
+            int rc = instance.ghm_.replaceHotkey(hotkey, kc);
             if (rc != gbhk::RC_SUCCESS)
                 hotkey = {};
             else
                 hotkey = kc;
             if (rc != gbhk::RC_SUCCESS)
-                mlog::warning("Failed to replace the hotkey, message: {}", gbhk::getReturnCodeMessage(rc));
+                qDebug() << "Failed to replace the hotkey, message:" << gbhk::getReturnCodeMessage(rc).c_str();
         }
         else
         {
-            mlog::info("Due to the original hotkey is invalid and setHotkey() got a valid hotkey so add the new hotkey");
-            int rc = instance.ghm_.add(kc, [=]() { hotkeyTriggered(); });
+            qDebug() << "Due to the original hotkey is invalid and setHotkey() got a valid hotkey so register the new hotkey";
+            int rc = instance.ghm_.registerHotkey(kc, [=]() { hotkeyTriggered(); });
             if (rc == gbhk::RC_SUCCESS)
                 hotkey = kc;
             if (rc != gbhk::RC_SUCCESS)
-                mlog::warning("Failed to add the hotkey, message: {}", gbhk::getReturnCodeMessage(rc));
+                qDebug() << "Failed to register the hotkey, message:" << gbhk::getReturnCodeMessage(rc).c_str();
         }
     }
 
@@ -79,23 +82,23 @@ void HotkeyHandler::hotkeyTriggered()
 {
     std::thread th([=]()
     {
-        auto executable = QDir::toNativeSeparators(Settings::getCurrentExecutable().second).toStdWString();
-        auto parameter = Settings::getParameter().toStdWString();
-        if (executable.empty())
+        auto executable = QDir::toNativeSeparators(Settings::getCurrentExecutable().second);
+        auto parameter = Settings::getParameter();
+        if (executable.isEmpty())
         {
-            mlog::info("The executable filename is empty");
+            qDebug() << "The executable filename is empty";
             return;
         }
 
         try
         {
-            auto path = getFocusedWindowDirectory();
-            if (!runExecutable(executable, path, parameter))
+            auto workDir = getFrontWindowExeDir();
+            if (!runExecutable(executable, workDir, parameter))
                 throw std::runtime_error("Failed to run the executable");
         }
         catch (std::exception& e)
         {
-            mlog::warning("Error occurred when run the getFocusedWindowDirectory() and runExecutable(), exception: {}", e.what());
+            qDebug() << "Error occurred when run the getFrontWindowExeDir() and runExecutable(), exception:" << e.what();
         }
     });
     th.detach();

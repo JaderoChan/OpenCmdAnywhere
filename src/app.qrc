@@ -1,7 +1,7 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
   <qresource prefix="/">
-    <file>icons/icon.ico</file>
     <file>icons/language.ico</file>
+    <file>icons/app.ico</file>
   </qresource>
 </RCC>

@@ -1,6 +1,7 @@
 #include "keycombination_inputer.h"
 
 KeyCombinationInputer::KeyCombinationInputer(QWidget* parent)
+    : QLineEdit(parent)
 {
     // 只接受点击获取焦点。
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
@@ -10,7 +11,7 @@ KeyCombinationInputer::KeyCombinationInputer(QWidget* parent)
     setAlignment(Qt::AlignmentFlag::AlignCenter);
     // 禁止编辑。
     setReadOnly(true);
-    // 设置光标图形为#PointingHandCursor。
+    // 设置光标图形为`PointingHandCursor`。
     setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
     setPlaceholderText(noneKcText_);
 }
@@ -37,9 +38,9 @@ void KeyCombinationInputer::setKeyCombination(const QKeyCombination& keyCombinat
     if (newKc != kc_)
     {
         kc_ = newKc;
-        updateText();
         emit keyCombinationChanged(kc_);
     }
+    updateText();
 }
 
 void KeyCombinationInputer::setKeyCombination(const QKeySequence& keySequence)
@@ -48,9 +49,9 @@ void KeyCombinationInputer::setKeyCombination(const QKeySequence& keySequence)
     if (newKc != kc_)
     {
         kc_ = newKc;
-        updateText();
         emit keyCombinationChanged(kc_);
     }
+    updateText();
 }
 
 bool KeyCombinationInputer::isVaild(int key, Qt::KeyboardModifiers mod)
@@ -65,6 +66,7 @@ bool KeyCombinationInputer::isVaild(int key, Qt::KeyboardModifiers mod)
         (key >= Qt::Key::Key_Tab && key <= Qt::Key::Key_PageDown);
 
     bool modIsValid =
+        (mod & Qt::Modifier::META) ||
         (mod & Qt::Modifier::CTRL) ||
         (mod & Qt::Modifier::ALT) ||
         (mod & Qt::Modifier::SHIFT);
@@ -135,5 +137,5 @@ void KeyCombinationInputer::mouseDoubleClickEvent(QMouseEvent* event)
 
 void KeyCombinationInputer::updateText()
 {
-    isWaitingInput_ ? setText(waitingText_) : setText(QKeySequence(kc_).toString());
+    isWaitingInput_ ? setText(waitingText_) : setText(QKeySequence(kc_).toString(QKeySequence::NativeText));
 }

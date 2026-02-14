@@ -1,20 +1,22 @@
 #include "systemtray.h"
 
+#include <thread>
+
 #include <qapplication.h>
 
 #include <easy_translate.hpp>
-#include <minilog.hpp>
 
 #include "config.h"
 #include "language.h"
 #include "settings.h"
-#include "utility.h"
+#include "file_icon_getter.h"
+#include "platforms/auto_run_on_startup.h"
 
 #include "about_dialog.h"
 #include "settings_dialog.h"
 
 SystemTray::SystemTray(QObject* parent) :
-    QSystemTrayIcon(QIcon(":/icons/icon.ico"), parent),
+    QSystemTrayIcon(QIcon(":/icons/app.ico"), parent),
     menu_(new QMenu())
 {
     setContextMenu(menu_);
@@ -27,10 +29,10 @@ SystemTray::SystemTray(QObject* parent) :
     menu_->addMenu(executableMenu_);
     menu_->addSeparator();
 
-    runOnStartup_ = new QAction(menu_);
-    runOnStartup_->setCheckable(true);
-    runOnStartup_->setChecked(Settings::getIsRunOnStartup());
-    menu_->addAction(runOnStartup_);
+    autoRunOnStartUp_ = new QAction(menu_);
+    autoRunOnStartUp_->setCheckable(true);
+    autoRunOnStartUp_->setChecked(Settings::getIsAutoRunOnStartUp());
+    menu_->addAction(autoRunOnStartUp_);
     menu_->addSeparator();
 
     setting_ = new QAction(menu_);
@@ -44,7 +46,7 @@ SystemTray::SystemTray(QObject* parent) :
     menu_->addAction(exitApp_);
 
     connect(this, &QSystemTrayIcon::activated, this, &SystemTray::onActivated);
-    connect(runOnStartup_, &QAction::triggered, this, &SystemTray::onRunOnStartupTriggered);
+    connect(autoRunOnStartUp_, &QAction::triggered, this, &SystemTray::onAutoRunOnStartupTriggered);
     connect(setting_, &QAction::triggered, this, &SystemTray::onSettingTriggered);
     connect(about_, &QAction::triggered, this, &SystemTray::onAboutTriggered);
     connect(exitApp_, &QAction::triggered, this, &SystemTray::onExitAppTriggered);
@@ -66,7 +68,7 @@ void SystemTray::updateText()
     executableMenu_->setTitle(EASYTR("Run With"));
     for (int i = 0; i < languageMenu_->actions().size(); ++i)
         languageMenu_->actions()[i]->setText(EASYTR(easytr::languages().getIds()[i]));
-    runOnStartup_->setText(EASYTR("Run on Startup"));
+    autoRunOnStartUp_->setText(EASYTR("Run on Startup"));
     setting_->setText(EASYTR("Setting"));
     about_->setText(EASYTR("About"));
     exitApp_->setText(EASYTR("Exit"));
@@ -82,6 +84,7 @@ bool SystemTray::eventFilter(QObject* obj, QEvent* event)
 
 void SystemTray::onActivated(ActivationReason reason)
 {
+#ifndef Q_OS_MAC
     switch (reason)
     {
         case Trigger:   // Fallthrough
@@ -91,15 +94,16 @@ void SystemTray::onActivated(ActivationReason reason)
         default:
             break;
     }
+#endif // !Q_OS_MAC
 }
 
-void SystemTray::onRunOnStartupTriggered()
+void SystemTray::onAutoRunOnStartupTriggered()
 {
-    bool runOnStartup = runOnStartup_->isChecked();
-    bool ret = setRunOnStartup(runOnStartup);
+    bool autoRunOnStartUp = autoRunOnStartUp_->isChecked();
+    bool ret = setAutoRunOnStartUp(autoRunOnStartUp);
     if (!ret)
-        mlog::warning("Failed to set to run on startup");
-    Settings::setIsRunOnStartup(runOnStartup);
+        qDebug() << "Failed to set to run on startup";
+    Settings::setAutoRunOnStartUp(autoRunOnStartUp);
 }
 
 void SystemTray::onSettingTriggered()
@@ -201,13 +205,10 @@ void SystemTray::setExecutableMenuIcon_(const QString& exePath)
 {
     std::thread th([=]()
     {
-        QIcon icon = getExecutableIcon(exePath);
+        QIcon icon = getFileIcon(exePath);
         executableMenu_->setIcon(icon);
         if (icon.isNull())
-            mlog::warning(
-                "Failed to get the executable icon, the executable path is {}",
-                exePath.toStdString()
-            );
+            qDebug() << "Failed to get the executable icon, the executable path is:" << exePath;
     });
     th.detach();
 }

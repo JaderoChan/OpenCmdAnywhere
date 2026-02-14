@@ -1,16 +1,11 @@
-#include "utility.h"
-
-#include <windows.h>
-#include <shellapi.h>
+#include "auto_run_on_startup.h"
 
 #include <qapplication.h>
 #include <qdir.h>
-#include <qfileinfo.h>
+#include <qstring.h>
 #include <qsettings.h>
 
-#include <minilog.hpp>
-
-bool isRunOnStartup()
+bool isAutoRunOnStartUp()
 {
     QSettings settings(
         "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
@@ -22,7 +17,7 @@ bool isRunOnStartup()
     return false;
 }
 
-bool setRunOnStartup(bool enable)
+bool setAutoRunOnStartUp(bool enable)
 {
     QSettings settings(
         "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
@@ -35,30 +30,4 @@ bool setRunOnStartup(bool enable)
         settings.remove(appName);
     settings.sync();
     return settings.status() == QSettings::NoError;
-}
-
-QIcon getExecutableIcon(const QString& exePath)
-{
-    std::wstring path = QDir::toNativeSeparators(exePath).toStdWString();
-    SHFILEINFOW sfi = {0};
-    // https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shgetfileinfow
-    // Remarks: You should call this function from a background thread. Failure to do so could cause the UI to stop responding.
-    DWORD_PTR result = SHGetFileInfoW(
-        path.c_str(),
-        0,
-        &sfi,
-        sizeof(sfi),
-        SHGFI_ICON | SHGFI_LARGEICON
-    );
-
-    QIcon icon;
-    if (result != 0 && sfi.hIcon != nullptr)
-    {
-        QPixmap pixmap = QPixmap::fromImage(QImage::fromHICON(sfi.hIcon));
-        if (!pixmap.isNull())
-            icon.addPixmap(pixmap);
-        DestroyIcon(sfi.hIcon);
-    }
-
-    return icon;
 }

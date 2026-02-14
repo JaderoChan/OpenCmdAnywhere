@@ -20,7 +20,7 @@ protected:
 
 protected:
     void onActivated(ActivationReason reason);
-    void onRunOnStartupTriggered();
+    void onAutoRunOnStartupTriggered();
     void onSettingTriggered();
     void onAboutTriggered();
     void onExitAppTriggered();
@@ -37,7 +37,7 @@ private:
     QMenu* languageMenu_ = nullptr;
     QMenu* executableMenu_ = nullptr;
     QActionGroup* executableGroup_ = nullptr;
-    QAction* runOnStartup_ = nullptr;
+    QAction* autoRunOnStartUp_ = nullptr;
     QAction* setting_ = nullptr;
     QAction* about_ = nullptr;
     QAction* exitApp_ = nullptr;

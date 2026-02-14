@@ -5,41 +5,44 @@
 #include <qevent.h>
 
 #include <easy_translate.hpp>
-#include <minilog.hpp>
 
 #include "config.h"
 
 QString setLanguage(const QString& langId)
 {
+#if defined(Q_OS_MAC) && defined(IS_MACOSX_BUNDLE)
+    QDir::setCurrent(QApplication::applicationDirPath() + "/../Resources");
+#else
     QDir::setCurrent(QApplication::applicationDirPath());
+#endif
     easytr::setLanguages(APP_LANG_FILENAME);
     if (easytr::languages().empty())
-        mlog::info("Invalid or empty Languages file");
+        qDebug() << "Invalid or empty Languages file";
 
     std::string id = langId.toStdString();
     if (easytr::hasLanguage(id))
     {
         if (easytr::setCurrentLanguage(id))
-            mlog::info("Successfully set language to: {}", id.c_str());
+            qDebug() << "Successfully set language to:" << id.c_str();
         else
-            mlog::warning("Failed to set language to: {}", id.c_str());
+            qDebug() << "Failed to set language to:" << id.c_str();
     }
     // Fallthrough, fallback
     else
     {
-        mlog::info("Expected language is missing, try fall back to the default language");
+        qDebug() << "Expected language is missing, try fall back to the default language";
         if (easytr::languages().empty())
         {
-            mlog::warning("Not find any language");
+            qDebug() << "Not find any language";
             return easytr::currentLanguage();
         }
         else
         {
             id = easytr::languages().getIds().front();
             if (easytr::setCurrentLanguage(id))
-                mlog::info("Successfully fall back to language: {}", id.c_str());
+                qDebug() << "Successfully fall back to language:" << id.c_str();
             else
-                mlog::warning("Failed to fall back to language: {}", id.c_str());
+                qDebug() << "Failed to fall back to language:" << id.c_str();
         }
     }
 

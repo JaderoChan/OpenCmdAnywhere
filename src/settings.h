@@ -20,13 +20,13 @@ public:
     // The return value may be empty.
     static QString getParameter();
     static gbhk::KeyCombination getKeyCombination();
-    static bool getIsRunOnStartup();
+    static bool getIsAutoRunOnStartUp();
 
     static void setLanguage(const QString& value);
     static void setCurrentExecutable(const QString& value);
     static void setParameter(const QString& value);
     static void setKeyCombination(const gbhk::KeyCombination& value);
-    static void setIsRunOnStartup(bool value);
+    static void setAutoRunOnStartUp(bool value);
 
     // Return: <display name : executable filename>
     static QVariantMap getAllExecutables();
