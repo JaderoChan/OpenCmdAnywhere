@@ -12,8 +12,10 @@ Settings::Settings()
         "Executables",
     #ifdef Q_OS_WIN
         QVariantMap({{COMMAND_DISPLAY_NAME, COMMAND_EXE}, {POWER_SHELL_DISPLAY_NAME, POWER_SHELL_EXE}})
-    #else defined(Q_OS_MAC)
+    #elif defined(Q_OS_MAC)
         QVariantMap({{TERMINAL_DISPLAY_NAME, TERMINAL_EXE}})
+    #else
+        // pass
     #endif // Q_OS_WIN
     ).toMap();
 }
@@ -37,7 +39,13 @@ QString Settings::getLangugae()
 
 std::pair<QString, QString> Settings::getCurrentExecutable()
 {
+#ifdef Q_OS_WIN
     QString displayName = getInstance().sm_.readSetting("CurrentExecutable", COMMAND_DISPLAY_NAME).toString();
+#elif defined(Q_OS_MAC)
+    QString displayName = getInstance().sm_.readSetting("CurrentExecutable", TERMINAL_DISPLAY_NAME).toString();
+#else
+    // pass
+#endif
     const auto& map = getAllExecutables();
     if (map.contains(displayName))
         return {displayName, map[displayName].toString()};
