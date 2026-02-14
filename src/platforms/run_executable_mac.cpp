@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 
 bool runExecutable(
-    const QString& exeFilename,
+    const QString& exeFilepath,
     const QString& workDirectory,
     const QString& parameter)
 {
@@ -26,7 +26,7 @@ bool runExecutable(
                 _exit(1);
         }
 
-        std::string exeFileStr = exeFilename.toStdString();
+        std::string exeFileStr = exeFilepath.toStdString();
         QStringList args = parameter.split(' ', Qt::SkipEmptyParts);
 
         std::vector<std::string> argsStdStr;

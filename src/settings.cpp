@@ -97,11 +97,11 @@ QVariantMap Settings::getAllExecutables()
     return getInstance().executables_;
 }
 
-void Settings::addExecutable(const QString& displayName, const QString& filename)
+void Settings::addExecutable(const QString& displayName, const QString& filepath)
 {
     {
         QMutexLocker<QMutex> locker(&getInstance().mtx_);
-        getInstance().executables_[displayName] = filename;
+        getInstance().executables_[displayName] = filepath;
     }
     getInstance().sm_.writeSetting("Executables", getAllExecutables());
 }

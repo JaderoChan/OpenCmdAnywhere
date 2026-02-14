@@ -42,7 +42,7 @@ void SettingsDialog::updatetText()
     ui.addExeBtn->setText(EASYTR("Add Executable"));
     ui.editExeBtn->setText(EASYTR("Edit Executable"));
     ui.removeExeBtn->setText(EASYTR("Remove Executable"));
-    ui.executableTable->setHorizontalHeaderLabels({EASYTR("Display Name"), EASYTR("Executable Filename")});
+    ui.executableTable->setHorizontalHeaderLabels({EASYTR("Display Name"), EASYTR("Executable Filepath")});
 }
 
 void SettingsDialog::changeEvent(QEvent* event)
@@ -63,8 +63,8 @@ void SettingsDialog::updateExecutablesTable()
         ui.executableTable->insertRow(ui.executableTable->rowCount());
         auto displayNameItem = new QTableWidgetItem(it.key());
         ui.executableTable->setItem(ui.executableTable->rowCount() - 1, 0, displayNameItem);
-        auto executableFilenameItem = new QTableWidgetItem(it.value().toString());
-        ui.executableTable->setItem(ui.executableTable->rowCount() - 1, 1, executableFilenameItem);
+        auto executableFilepathItem = new QTableWidgetItem(it.value().toString());
+        ui.executableTable->setItem(ui.executableTable->rowCount() - 1, 1, executableFilepathItem);
     }
 }
 
@@ -104,9 +104,9 @@ void SettingsDialog::onEditExeBtnClicked()
     if (row == -1)
         return;
     QString displayName = ui.executableTable->item(row, 0)->text();
-    QString filename = ui.executableTable->item(row, 1)->text();
+    QString filepath = ui.executableTable->item(row, 1)->text();
 
-    ExecutableItemDialog dlg({displayName, filename}, this);
+    ExecutableItemDialog dlg({displayName, filepath}, this);
     int ret = dlg.exec();
     if (ret == QDialog::Accepted)
     {

@@ -6,11 +6,11 @@
 #include <userenv.h>
 
 bool runExecutable(
-    const QString& exeFilename,
+    const QString& exeFilepath,
     const QString& workDirectory,
     const QString& parameter)
 {
-    QString cmdLine = "\"" + exeFilename + "\"";
+    QString cmdLine = "\"" + exeFilepath + "\"";
     if (!parameter.isEmpty())
         cmdLine += (" " + parameter);
 

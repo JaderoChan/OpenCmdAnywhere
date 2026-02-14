@@ -88,7 +88,7 @@ void HotkeyHandler::hotkeyTriggered()
         auto parameter = Settings::getParameter();
         if (executable.isEmpty())
         {
-            qDebug() << "The executable filename is empty";
+            qDebug() << "The executable filepath is empty";
             return;
         }
 

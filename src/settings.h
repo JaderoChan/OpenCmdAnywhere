@@ -15,7 +15,7 @@ public:
     static Settings& getInstance();
 
     static QString getLangugae();
-    // Return: <display name : executable filename>, the executable filename may be invalid.
+    // Return: <display name : executable filepath>, the executable filepath may be invalid.
     static std::pair<QString, QString> getCurrentExecutable();
     // The return value may be empty.
     static QString getParameter();
@@ -28,9 +28,9 @@ public:
     static void setKeyCombination(const gbhk::KeyCombination& value);
     static void setAutoRunOnStartUp(bool value);
 
-    // Return: <display name : executable filename>
+    // Return: <display name : executable filepath>
     static QVariantMap getAllExecutables();
-    static void addExecutable(const QString& displayName, const QString& filename);
+    static void addExecutable(const QString& displayName, const QString& filepath);
     static void removeExecutable(const QString& displayName);
 
 private:

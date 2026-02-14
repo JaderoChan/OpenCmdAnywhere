@@ -144,15 +144,15 @@ void SystemTray::updateExecutableMenu()
     for (auto it = exes.begin(); it != exes.end(); ++it)
     {
         auto displayName = it.key();
-        auto filename = it.value().toString();
+        auto filepath = it.value().toString();
 
         auto action = new QAction(displayName, menu_);
-        action->setToolTip(filename);
+        action->setToolTip(filepath);
         action->setCheckable(true);
         if (displayName == currentExe.first)
         {
             action->setChecked(true);
-            setExecutableMenuIcon_(filename);
+            setExecutableMenuIcon_(filepath);
         }
         executableGroup_->addAction(action);
         executableMenu_->addAction(action);
@@ -162,7 +162,7 @@ void SystemTray::updateExecutableMenu()
             if (displayName != Settings::getCurrentExecutable().first)
             {
                 Settings::setCurrentExecutable(displayName);
-                setExecutableMenuIcon_(filename);
+                setExecutableMenuIcon_(filepath);
             }
         });
     }

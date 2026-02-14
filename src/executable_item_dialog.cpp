@@ -38,9 +38,9 @@ void ExecutableItemDialog::updateText()
 {
     setWindowTitle(EASYTR("Edit Executable Item"));
     ui.displayNameLbl->setText(EASYTR("Display Name"));
-    ui.executableFileLbl->setText(EASYTR("Executable Filename"));
+    ui.executableFileLbl->setText(EASYTR("Executable Filepath"));
     ui.displayNameEdit->setPlaceholderText(EASYTR("Input the display name"));
-    ui.executableFileEdit->setPlaceholderText(EASYTR("Input the executable filename"));
+    ui.executableFileEdit->setPlaceholderText(EASYTR("Input the executable filepath"));
     ui.selectFileBtn->setText(EASYTR("Select File"));
     ui.confirmBtn->setText(EASYTR("Confirm"));
     ui.cancelBtn->setText(EASYTR("Cancel"));
@@ -55,14 +55,14 @@ void ExecutableItemDialog::changeEvent(QEvent* event)
 
 void ExecutableItemDialog::onSelectFileBtnClicked()
 {
-    QString filename = QFileDialog::getOpenFileName(
+    QString filepath = QFileDialog::getOpenFileName(
         this,
         EASYTR("Select a executable file"),
         QDir::rootPath(),
         QString(EASYTR("Executable File")) + " (*.exe)"
     );
-    if (!filename.isEmpty())
-        ui.executableFileEdit->setText(filename);
+    if (!filepath.isEmpty())
+        ui.executableFileEdit->setText(filepath);
 }
 
 void ExecutableItemDialog::onConfirmBtnClicked()

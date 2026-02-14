@@ -15,7 +15,7 @@ QString setLanguage(const QString& langId)
 #else
     QDir::setCurrent(QApplication::applicationDirPath());
 #endif
-    easytr::setLanguages(APP_LANG_FILENAME);
+    easytr::setLanguages(APP_LANG_FILEPATH);
     if (easytr::languages().empty())
         qDebug() << "Invalid or empty Languages file";
 
