@@ -94,7 +94,7 @@ elseif(APPLE)
 
     target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON})
 else()
-    # todo
+    # TODO
 endif()
 
 # 配置MacOS下Bundle属性
