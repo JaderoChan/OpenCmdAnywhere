@@ -9,7 +9,7 @@
 #include "language.h"
 #include "settings.h"
 #include "systemtray.h"
-#include "platforms/auto_run_on_startup.h"
+#include "platform/auto_run_on_startup.h"
 
 int main(int argc, char* argv[])
 {

@@ -5,8 +5,8 @@
 #include <qdir.h>
 
 #include "settings.h"
-#include "platforms/front_window_exedir_getter.h"
-#include "platforms/run_executable.h"
+#include "platform/front_window_exedir_getter.h"
+#include "platform/run_executable.h"
 
 HotkeyHandler::HotkeyHandler() :
 #ifdef Q_OS_WIN

@@ -10,7 +10,7 @@
 #include "language.h"
 #include "settings.h"
 #include "file_icon_getter.h"
-#include "platforms/auto_run_on_startup.h"
+#include "platform/auto_run_on_startup.h"
 
 #include "about_dialog.h"
 #include "settings_dialog.h"
