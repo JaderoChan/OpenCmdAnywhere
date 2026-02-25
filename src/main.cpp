@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     if (lock.isLocked() || !lock.tryLock(200))
         return 0;
 
-    QApplication a(argc, argv);
+    QApplication  a(argc, argv);
     a.setOrganizationDomain(APP_ORGANIZATION_DOMAIN);
     a.setOrganizationName(APP_ORGANIZATION);
     a.setApplicationName(APP_TITLE);

@@ -10,12 +10,12 @@
 
 QString setLanguage(const QString& langId)
 {
-#if defined(Q_OS_MAC) && defined(IS_MACOSX_BUNDLE)
+#if defined(Q_OS_MAC)
     QDir::setCurrent(QApplication::applicationDirPath() + "/../Resources");
 #else
     QDir::setCurrent(QApplication::applicationDirPath());
 #endif
-    easytr::setLanguages(APP_LANG_FILEPATH);
+    easytr::setLanguages(easytr::Languages::fromFile(APP_LANG_FILEPATH));
     if (easytr::languages().empty())
         qDebug() << "Invalid or empty Languages file";
 
