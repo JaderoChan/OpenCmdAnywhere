@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     a.setWindowIcon(QIcon(":/icons/app.ico"));
     a.setQuitOnLastWindowClosed(false);
 
-    auto langId = Settings::getLangugae();
+    auto langId = Settings::getLanguage();
     langId = setLanguage(langId);
     Settings::setLanguage(langId);
 

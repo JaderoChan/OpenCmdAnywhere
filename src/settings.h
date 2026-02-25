@@ -14,7 +14,7 @@ class Settings
 public:
     static Settings& getInstance();
 
-    static QString getLangugae();
+    static QString getLanguage();
     // Return: <display name : executable filepath>, the executable filepath may be invalid.
     static std::pair<QString, QString> getCurrentExecutable();
     // The return value may be empty.

@@ -26,7 +26,7 @@ Settings& Settings::getInstance()
     return instance;
 }
 
-QString Settings::getLangugae()
+QString Settings::getLanguage()
 {
     QLocale locale = QLocale::system();
     switch (locale.language())

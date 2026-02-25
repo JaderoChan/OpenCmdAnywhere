@@ -176,7 +176,7 @@ void SystemTray::setupLanguageMenu_()
     auto languageGroup = new QActionGroup(menu_);
     languageGroup->setExclusive(true);
 
-    auto currentLang = Settings::getLangugae();
+    auto currentLang = Settings::getLanguage();
     for (const auto& id : easytr::languages().getIds())
     {
         auto action = new QAction(menu_);
