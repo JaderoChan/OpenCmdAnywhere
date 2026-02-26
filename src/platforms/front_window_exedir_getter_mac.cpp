@@ -4,6 +4,10 @@
 #include <stdexcept>
 #include <string>
 
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <libproc.h>
+
 #include <qfile.h>
 #include <qfileinfo.h>
 

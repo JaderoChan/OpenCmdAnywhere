@@ -216,7 +216,7 @@
   <customwidget>
    <class>KeyCombinationInputer</class>
    <extends>QLineEdit</extends>
-   <header>keycombination_inputer.h</header>
+   <header>app/keycombination_inputer.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
