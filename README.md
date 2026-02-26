@@ -4,11 +4,10 @@
 
 ## 依赖
 
-- Qt5.0+（开发环境是Qt6.4.3）：用于GUI界面和注册表编辑
+- Qt5.0+（开发环境是 `Qt6.4.3`）：用于 **GUI** 界面和注册表编辑
 - [global_hokety](https://github.com/JaderoChan/global_hotkey)：用于全局热键
-- [nlohmann/json](https://github.com/nlohmann/json)：`easy_translate`库的依赖
 - [easy_translate](https://github.com/JaderoChan/easy_translate)：用于界面翻译
 
 ## 平台
 
-仅Windows
+**Windows** 和 **MacOS**
