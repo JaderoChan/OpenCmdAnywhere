@@ -80,6 +80,7 @@ void SystemTray::updateText()
     autoRunOnStartUp_->setText(EASYTR("Run on Startup"));
     setting_->setText(EASYTR("Setting"));
     about_->setText(EASYTR("About"));
+    openLogDir_->setText(EASYTR("Open Log Directory"));
     exitApp_->setText(EASYTR("Exit"));
 }
 
