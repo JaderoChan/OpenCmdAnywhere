@@ -1,0 +1,29 @@
+#include "about_dialog.h"
+
+#include <easy_translate.hpp>
+
+#include "config.h"
+#include "logo_icon.h"
+
+AboutDialog::AboutDialog(QWidget* parent)
+    : QDialog(parent)
+{
+    ui.setupUi(this);
+    ui.icon->setPixmap(getLogoPixmap());
+    ui.versionLbl->setText(APP_VERSION);
+    ui.copyrightLbl->setText(APP_COPYRIGHT_TEXT);
+    updateText();
+}
+
+void AboutDialog::updateText()
+{
+    setWindowTitle(EASYTR("About"));
+    ui.titleLbl->setText(EASYTR(APP_TITLE));
+}
+
+void AboutDialog::changeEvent(QEvent* event)
+{
+    if (event->type() == QEvent::LanguageChange)
+        updateText();
+    QDialog::changeEvent(event);
+}

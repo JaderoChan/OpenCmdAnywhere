@@ -30,16 +30,6 @@ BEGIN
       VALUE "LegalCopyright", "@APP_COPYRIGHT_TEXT@\0"
       VALUE "Contact e-mail", "@APP_AUTHOR_EMAIL@\0"
     END
-    BLOCK "080404b0"
-    BEGIN
-      VALUE "CompanyName", "@APP_ORGANIZATION@\0"
-      VALUE "ProductName", "@APP_TITLE@\0"
-      VALUE "ProductVersion", PRODUCTVERSION_STR
-      VALUE "FileVersion", FILEVERSION_STR
-      VALUE "FileDescription", "Open CMD Anywhere\0"
-      VALUE "LegalCopyright", "@APP_COPYRIGHT_TEXT@\0"
-      VALUE "Contact e-mail", "@APP_AUTHOR_EMAIL@\0"
-    END
   END
   BLOCK "VarFileInfo"
   BEGIN
