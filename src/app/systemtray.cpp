@@ -3,6 +3,9 @@
 #include <thread>
 
 #include <qapplication.h>
+#include <qdesktopservices.h>
+#include <qmessagebox.h>
+#include <qurl.h>
 
 #include <easy_translate.hpp>
 
@@ -42,6 +45,9 @@ SystemTray::SystemTray(QObject* parent)
 
     about_ = new QAction(menu_);
     menu_->addAction(about_);
+
+    openLogDir_ = new QAction(menu_);
+    menu_->addAction(openLogDir_);
     menu_->addSeparator();
 
     exitApp_ = new QAction(menu_);
@@ -51,6 +57,7 @@ SystemTray::SystemTray(QObject* parent)
     connect(autoRunOnStartUp_, &QAction::triggered, this, &SystemTray::onAutoRunOnStartupTriggered);
     connect(setting_, &QAction::triggered, this, &SystemTray::onSettingTriggered);
     connect(about_, &QAction::triggered, this, &SystemTray::onAboutTriggered);
+    connect(openLogDir_, &QAction::triggered, this, &SystemTray::onOpenLogDirTriggered);
     connect(exitApp_, &QAction::triggered, this, &SystemTray::onExitAppTriggered);
 
     show();
@@ -117,6 +124,19 @@ void SystemTray::onAboutTriggered()
 {
     AboutDialog dlg = AboutDialog();
     dlg.exec();
+}
+
+void SystemTray::onOpenLogDirTriggered()
+{
+    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(APP_LOG_DIRPATH)))
+    {
+        QMessageBox msgBox(
+            QMessageBox::Critical,
+            EASYTR("Error"),
+            EASYTR("Failed to open log directory")
+        );
+        msgBox.exec();
+    }
 }
 
 void SystemTray::onExitAppTriggered()

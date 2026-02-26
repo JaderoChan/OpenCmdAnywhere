@@ -23,6 +23,7 @@ protected:
     void onAutoRunOnStartupTriggered();
     void onSettingTriggered();
     void onAboutTriggered();
+    void onOpenLogDirTriggered();
     void onExitAppTriggered();
 
     void updateExecutableMenu();
@@ -40,5 +41,6 @@ private:
     QAction* autoRunOnStartUp_ = nullptr;
     QAction* setting_ = nullptr;
     QAction* about_ = nullptr;
+    QAction* openLogDir_ = nullptr;
     QAction* exitApp_ = nullptr;
 };
