@@ -10,11 +10,11 @@
 #include "utils/logging.h"
 
 HotkeyHandler::HotkeyHandler()
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
     : ghm_(gbhk::RegisterGlobalHotkeyManager::getInstance())
 #else
     : ghm_(gbhk::HookGlobalHotkeyManager::getInstance())
-#endif // Q_OS_WIN
+#endif
 {
     int rc = ghm_.run();
     if (rc != gbhk::RC_SUCCESS)
