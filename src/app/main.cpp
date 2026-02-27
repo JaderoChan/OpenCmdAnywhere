@@ -9,8 +9,6 @@
 #include "file_logger.h"
 #include "language.h"
 #include "logo_icon.h"
-#include "require_permission_dialog.h"
-#include "platforms/permission_manager.h"
 #include "utils/logging.h"
 
 int main(int argc, char* argv[])
@@ -39,25 +37,6 @@ int main(int argc, char* argv[])
     setLanguage(loadSettings().language);
 
     a.setApplicationDisplayName(EASYTR(APP_TITLE));
-
-    // 检查应用权限
-    if (!PermissionManager::hasPermission())
-    {
-        debugOut(qInfo(), "[Start] No permission, try request.");
-
-        RequirePermissionDialog dlg;
-        int ret = dlg.exec();
-        switch (ret)
-        {
-            case RequirePermissionDialog::GotPermission:
-            case RequirePermissionDialog::ForceContinue:
-                break;
-            case RequirePermissionDialog::Exit:
-                return 0;
-            default:
-                break;
-        }
-    }
 
     AppManager appMgr;
 
