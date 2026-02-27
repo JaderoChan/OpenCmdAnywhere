@@ -31,6 +31,16 @@ SystemTrayIcon::SystemTrayIcon(const Settings& settings, QObject* parent)
     setContextMenu(&menu_);
 
     connect(this, &QSystemTrayIcon::activated, this, &SystemTrayIcon::onActivated);
+    connect(&autoRunOnStartUpAction_, &QAction::triggered, this, [=](bool checked)
+    { emit autoRunOnStartUpChanged(checked); });
+    connect(&settingsDialogAction_, &QAction::triggered, this, [=]()
+    { emit settingsDialogActionTriggered(); });
+    connect(&aboutDialogAction_, &QAction::triggered, this, [=]()
+    { emit aboutDialogActionTriggered(); });
+    connect(&openLogDirAction_, &QAction::triggered, this, [=]()
+    { emit openLogDirActionTriggered(); });
+    connect(&exitAppAction_, &QAction::triggered, this, [=]()
+    { emit exitAppActionTriggered(); });
 
     show(); // 先进行显示再更新文本可以防止 Tool Tip 设置失败。
     updateText();
@@ -45,11 +55,11 @@ void SystemTrayIcon::updateText()
     for (int i = 0; i < languagesMenu_.actions().size(); ++i)
         languagesMenu_.actions()[i]->setText(EASYTR(easytr::languages().getIds()[i]));
 
-    autoRunOnStartUpAction_.setText(EASYTR("Run On Start Up"));
-    settingsDialogAction_.setText(EASYTR("Setting"));
+    autoRunOnStartUpAction_.setText(EASYTR("Auto Run On Start Up"));
+    settingsDialogAction_.setText(EASYTR("Settings"));
     aboutDialogAction_.setText(EASYTR("About"));
     openLogDirAction_.setText(EASYTR("Open Log Directory"));
-    exitAppAction_.setText(EASYTR("Exit"));
+    exitAppAction_.setText(EASYTR("Exit App"));
 }
 
 void SystemTrayIcon::onActivated(ActivationReason reason)
@@ -96,22 +106,26 @@ void SystemTrayIcon::setupExecutablesMenu_()
     executablesGroup->setExclusive(true);
 
     int idx = 0;
-    for (const auto& executablesItem : defaultExecutables())
+    for (const auto& executableItem : defaultExecutables())
     {
-        auto action = new QAction(executablesItem.name, &menu_);
+        auto action = new QAction(executableItem.name, &menu_);
 
-        action->setToolTip(executablesItem.filepath);
+        action->setToolTip(executableItem.filepath);
         action->setCheckable(true);
         if (idx == settings_.currentExecutableIdx)
         {
             action->setChecked(true);
-            setExecutablesMenuIcon_(executablesItem.filepath);
+            setExecutablesMenuIcon_(executableItem.filepath);
         }
 
         executablesGroup->addAction(action);
         executablesMenu_.addAction(action);
 
-        connect(action, &QAction::triggered, this, [=]() { emit currentExecutableChanged(idx); });
+        connect(action, &QAction::triggered, this, [=]()
+        {
+            setExecutablesMenuIcon_(executableItem.filepath);
+            emit currentExecutableChanged(idx);
+        });
 
         ++idx;
     }

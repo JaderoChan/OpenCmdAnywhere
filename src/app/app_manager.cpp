@@ -20,7 +20,11 @@ AppManager::AppManager(QObject* parent)
     : QObject(parent), settings_(loadSettings())
 {
     hotkeyMgr_ = new HotkeyManager(this);
+    hotkeyMgr_->setHotkey(settings_.hotkey);
     sti_ = new SystemTrayIcon(settings_, this);
+
+    if (settings_.autoRunOnStartUp != isAutoRunOnStartUp())
+        setAutoRunOnStartUp(settings_.autoRunOnStartUp);
 
     connect(sti_, &SystemTrayIcon::languageChanged, this, &AppManager::onLanguageChanged);
     connect(sti_, &SystemTrayIcon::currentExecutableChanged, this, &AppManager::onCurrentExecutableChanged);
@@ -117,29 +121,30 @@ void AppManager::onHotkeyTriggered()
 
     auto args = QProcess::splitCommand(settings_.parameter);
 
-    std::thread th([=]()
+    QString workDir;
+    try { workDir = getFrontWindowExeDir(); }
+    catch (const std::exception& e)
     {
-        QString workDir;
-        try { workDir = getFrontWindowExeDir(); }
-        catch (const std::exception& e)
-        {
-            debugOut(qWarning(),
-                "[Hotkey Triggered] Failed to get front window executable directory. Error message: %1.",
-                e.what());
-            return;
-        }
+        debugOut(qWarning(),
+            "[Hotkey Triggered] Failed to get front window executable directory. Error message: %1.",
+            e.what());
+        return;
+    }
 
-        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-        QProcess process;
-        process.setProgram(executable);
-        process.setArguments(args);
-        process.setWorkingDirectory(workDir);
-        if (!process.startDetached())
-        {
-            debugOut(qWarning(),
-                "[Hotkey Triggered] Failed to start the executable '%1' in directory '%2' with parameters '%3'.",
-                executable, workDir, settings_.parameter);
-        }
-    });
-    th.detach();
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    QProcess process;
+    process.setProgram(executable);
+    process.setArguments(args);
+    process.setWorkingDirectory(workDir);
+    process.setProcessEnvironment(env);
+    if (!process.startDetached())
+    {
+        debugOut(qWarning(),
+            "[Hotkey Triggered] Failed to start the executable '%1' in directory '%2' with parameters '%3'.",
+            executable, workDir, settings_.parameter);
+    }
+
+    debugOut(qDebug(),
+        ">>> Start Program '%1' in directory '%2' with parameters '%3'.",
+        executable, workDir, settings_.parameter);
 }

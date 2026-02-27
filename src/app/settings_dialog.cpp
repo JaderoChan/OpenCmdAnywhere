@@ -54,7 +54,7 @@ SettingsDialog::SettingsDialog(const QString& parameter, const gbhk::KeyCombinat
 
 void SettingsDialog::updateText()
 {
-    setWindowTitle(EASYTR("Setting"));
+    setWindowTitle(EASYTR("Settings"));
     ui.parameterLbl->setText(EASYTR("Startup Parameter"));
     ui.parameterEdit->setPlaceholderText(EASYTR("No Parameter"));
     ui.hotkeyLbl->setText(EASYTR("Run Hotkey"));
