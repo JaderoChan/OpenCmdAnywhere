@@ -9,6 +9,31 @@
 #include "settings.h"
 #include "executable_item_dialog.h"
 
+#ifdef Q_OS_MAC
+
+namespace fix
+{
+
+static QKeyCombination swapCtrlMeta(const QKeyCombination& kc) noexcept
+{
+    Qt::KeyboardModifiers mod = kc.keyboardModifiers();
+
+    // 在MacOS上如果用户按下了Control/Meta键（其为`Qt::Modifier::META`/`Qt::Modifier::CTRL`），
+    // 则映射至`Qt::Modifier::CTRL`/`Qt::Modifier::META`。
+    if ((mod & Qt::Modifier::META) && !(mod & Qt::Modifier::CTRL))
+        mod = Qt::KeyboardModifiers((mod & ~Qt::Modifier::META) | Qt::Modifier::CTRL);
+    else if ((mod & Qt::Modifier::CTRL) && !(mod & Qt::Modifier::META))
+        mod = Qt::KeyboardModifiers((mod & ~Qt::Modifier::CTRL) | Qt::Modifier::META);
+    else
+        return kc;
+
+    return QKeyCombination(mod, kc.key());
+};
+
+} // namespace fix
+
+#endif // Q_OS_MAC
+
 SettingsDialog::SettingsDialog(QWidget* parent)
     : QDialog(parent)
 {
@@ -75,6 +100,10 @@ void SettingsDialog::onParameterTextChanged()
 
 void SettingsDialog::onHotkeyChanged(QKeyCombination kc)
 {
+    #ifdef Q_OS_MAC
+        // MacOS下交换Ctrl与Meta修饰键。
+        kc = fix::swapCtrlMeta(kc);
+    #endif // Q_OS_MAC
     auto kcStr = QKeySequence(kc).toString();
     auto gbhkKc = gbhk::KeyCombination::fromString(kcStr.toStdString());
     HotkeyHandler::setHotkey(gbhkKc);

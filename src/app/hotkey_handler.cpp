@@ -38,6 +38,7 @@ HotkeyHandler& HotkeyHandler::getInstance()
 
 void HotkeyHandler::setHotkey(const gbhk::KeyCombination& newHotkey)
 {
+    debugOut(qDebug(), ">>> Setting Hotkey: %1", newHotkey.toString(gbhk::MOD_TEXT_FORMAT_PORTABLE, '+', true).c_str());
     auto& instance = getInstance();
     auto& ghm = instance.ghm_;
     auto& oldHotkey = getInstance().hotkey_;
@@ -81,6 +82,7 @@ void HotkeyHandler::hotkeyTriggered()
     {
         auto executable = QDir::toNativeSeparators(Settings::getCurrentExecutable().second);
         auto parameter = Settings::getParameter();
+        debugOut(qDebug(), "<<< Executable: %1, Parameter: %2", executable, parameter);
         if (executable.isEmpty())
         {
             debugOut(qWarning(), "[Hotkey Triggered] The executable filepath is empty.");
@@ -96,6 +98,7 @@ void HotkeyHandler::hotkeyTriggered()
                 e.what());
             return;
         }
+        debugOut(qDebug(), "<<< Working Directory: %1", workDir);
 
         if (!runExecutable(executable, workDir, parameter))
         {

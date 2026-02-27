@@ -1,12 +1,10 @@
 #include "front_window_exedir_getter.h"
 
+#import <Cocoa/Cocoa.h>
+
 #include <cstdio>   // FILE, popen, pclose, fgets
 #include <stdexcept>
 #include <string>
-
-#include <sys/types.h>
-#include <sys/sysctl.h>
-#include <libproc.h>
 
 #include <qfile.h>
 #include <qfileinfo.h>
@@ -62,33 +60,19 @@ QString getFrontWindowExeDir()
     {
         // 如果获取Finder目录路径出现错误则回退至获取前景窗口可执行文件所在目录路径。
 
-        int frontPid = 0;
-        size_t pidSize = sizeof(frontPid);
-
-        // 获取前景进程的PID。
-        int mib[2] = {CTL_KERN, KERN_ARGMAX};
-        if (sysctl(mib, 2, &frontPid, &pidSize, nullptr, 0) == -1)
-            throw std::runtime_error("Failed to get front window PID");
-
-        if (frontPid > 0)
+        @autoreleasepool
         {
-            // 获取可执行文件路径。
-            char pathBuf[PROC_PIDPATHINFO_MAXSIZE];
-            int ret = proc_pidpath(frontPid, pathBuf, sizeof(pathBuf));
+            NSRunningApplication* app = [[NSWorkspace sharedWorkspace] frontmostApplication];
+            if (!app)
+                throw std::runtime_error("No frontmost application");
 
-            if (ret > 0)
-            {
-                auto path = std::filesystem::path(pathBuf).parent_path().string();
-                return QString::fromStdString(path);
-            }
-            else
-            {
-                throw std::runtime_error("Failed to get executable path from front window PID");
-            }
-        }
-        else
-        {
-            throw std::runtime_error("Invalid front window PID");
+            NSURL* exeURL = [app executableURL];
+            if (!exeURL)
+                throw std::runtime_error("No executable URL");
+
+            QString exePath = QString::fromUtf8([[exeURL path] UTF8String]);
+            QFileInfo fi(exePath);
+            return fi.absolutePath();
         }
     }
 }

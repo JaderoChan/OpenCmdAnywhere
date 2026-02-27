@@ -35,7 +35,7 @@
 
 // MacOS
 #define TERMINAL_DISPLAY_NAME      "Terminal"
-#define TERMINAL_EXE               "/bin/zsh"
+#define TERMINAL_EXE               "/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"
 
 #ifdef Q_OS_WIN
     #define DEFAULT_HOTKEY             "Alt+T"
