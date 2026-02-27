@@ -138,10 +138,6 @@ void AppManager::onHotkeyTriggered()
                 "[Hotkey Triggered] Failed to start the executable '%1' in directory '%2' with parameters '%3'.",
                 executable, workDir, settings_.parameter);
         }
-
-        debugOut(qDebug(),
-            ">>> Start Program '%1' in directory '%2' with parameters '%3'.",
-            executable, workDir, settings_.parameter);
     });
     th.detach();
 }
