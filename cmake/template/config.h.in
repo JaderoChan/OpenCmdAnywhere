@@ -5,20 +5,20 @@
 #include <qstandardpaths.h>
 #include <qstring.h>
 
-#define APP_ORGANIZATION        "@APP_ORGANIZATION@"
-#define APP_ORGANIZATION_DOMAIN "@APP_ORGANIZATION_DOMAIN@"
-#define APP_TITLE               "@APP_TITLE@"
-#define APP_VERSION             "@APP_VERSION@"
-#define APP_COPYRIGHT_TEXT      "@APP_COPYRIGHT_TEXT@"
-#define APP_UUID                "@APP_UUID@"
+#define APP_ORGANIZATION            "@APP_ORGANIZATION@"
+#define APP_ORGANIZATION_DOMAIN     "@APP_ORGANIZATION_DOMAIN@"
+#define APP_TITLE                   "@APP_TITLE@"
+#define APP_VERSION                 "@APP_VERSION@"
+#define APP_COPYRIGHT_TEXT          "@APP_COPYRIGHT_TEXT@"
+#define APP_UUID                    "@APP_UUID@"
 
-#define APP_LANG_FILEPATH       "languages/languages.json"
-#define APP_LOCK_FILEPATH       (APP_TITLE "-" APP_UUID ".lock")
+#define APP_LANG_FILEPATH           "languages/languages.json"
+#define APP_LOCK_FILEPATH           (APP_TITLE "-" APP_UUID ".lock")
 
 // Log Files
-#define APP_LOG_DIRPATH         (QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
-#define APP_LOG_FILENAME        (QDate::currentDate().toString("yyyy-MM-dd") + ".log")
-#define APP_LOG_FILEPATH        (APP_LOG_DIRPATH + "/" + APP_LOG_FILENAME)
+#define APP_LOG_DIRPATH             (QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
+#define APP_LOG_FILENAME            (QDate::currentDate().toString("yyyy-MM-dd") + ".log")
+#define APP_LOG_FILEPATH            (APP_LOG_DIRPATH + "/" + APP_LOG_FILENAME)
 
 #define APP_DIRPATH QApplication::applicationDirPath()
 #ifdef Q_OS_MAC
@@ -34,11 +34,11 @@
 #define POWER_SHELL_EXE             "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
 
 // MacOS
-#define TERMINAL_DISPLAY_NAME      "Terminal"
-#define TERMINAL_EXE               "/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"
+#define TERMINAL_DISPLAY_NAME       "Terminal"
+#define TERMINAL_EXE                "/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"
 
 #ifdef Q_OS_WIN
-    #define DEFAULT_HOTKEY             "Alt+T"
+    #define DEFAULT_HOTKEY          "Alt+T"
 #else
-    #define DEFAULT_HOTKEY             "Win+Alt+T"
+    #define DEFAULT_HOTKEY          "Win+Alt+T"
 #endif // Q_OS_WIN
