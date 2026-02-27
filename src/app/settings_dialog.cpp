@@ -31,11 +31,13 @@ static QKeyCombination swapCtrlMeta(const QKeyCombination& kc) noexcept
 
 static QKeyCombination gbhkKcToQtKc(const gbhk::KeyCombination& kc)
 {
-    QKeyCombination qkc = QKeySequence::fromString(kc.toString().c_str())[0];
+    auto qks = QKeySequence::fromString(kc.toString().c_str());
+    if (qks.count() == 0)
+        return QKeyCombination();
 #ifdef Q_OS_MAC
-    return fix::swapCtrlMeta(qkc);
+    return fix::swapCtrlMeta(qks[0]);
 #else
-    return qkc;
+    return qks[0];
 #endif // Q_OS_MAC
 }
 
