@@ -40,5 +40,5 @@
 #ifdef Q_OS_WIN
     #define DEFAULT_HOTKEY          "Alt+T"
 #else
-    #define DEFAULT_HOTKEY          "Win+Alt+T"
+    #define DEFAULT_HOTKEY          "Meta+Alt+T"
 #endif // Q_OS_WIN

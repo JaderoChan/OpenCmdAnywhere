@@ -29,23 +29,40 @@ static QKeyCombination swapCtrlMeta(const QKeyCombination& kc) noexcept
 
 #endif // Q_OS_MAC
 
+static QKeyCombination gbhkKcToQtKc(const gbhk::KeyCombination& kc)
+{
+    QKeyCombination qkc = QKeySequence::fromString(kc.toString().c_str())[0];
+#ifdef Q_OS_MAC
+    return fix::swapCtrlMeta(qkc);
+#else
+    return qkc;
+#endif // Q_OS_MAC
+}
+
+static gbhk::KeyCombination qtKcToGbhkKc(const QKeyCombination& qkc)
+{
+#ifdef Q_OS_MAC
+    QString kcStr = QKeySequence(fix::swapCtrlMeta(qkc)).toString();
+#else
+    QString kcStr = QKeySequence(qkc).toString();
+#endif // Q_OS_MAC
+    return gbhk::KeyCombination::fromString(kcStr.toStdString());
+}
+
 SettingsDialog::SettingsDialog(const QString& parameter, const gbhk::KeyCombination& hotkey, QWidget* parent)
     : QDialog(parent)
 {
     ui.setupUi(this);
 
     ui.parameterEdit->setText(parameter);
-    ui.hotkeyEdit->setKeyCombination(QKeySequence::fromString(hotkey.toString().c_str()));
+    ui.hotkeyEdit->setKeyCombination(gbhkKcToQtKc(hotkey));
 
     connect(ui.parameterEdit, &QTextEdit::textChanged, this, [=]()
     { emit parameterChanged(ui.parameterEdit->toPlainText()); });
 
     connect(ui.hotkeyEdit, &KeyCombinationInputer::keyCombinationChanged, this, [=](QKeyCombination qkc)
     {
-    #ifdef Q_OS_MAC
-        qkc = fix::swapCtrlMeta(qkc);
-    #endif // Q_OS_MAC
-        auto hotkey = gbhk::KeyCombination::fromString(QKeySequence(qkc).toString().toStdString());
+        auto hotkey = qtKcToGbhkKc(qkc);
         emit hotkeyChanged(hotkey);
     });
 

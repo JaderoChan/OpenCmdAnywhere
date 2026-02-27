@@ -9,9 +9,9 @@ static bool runCmd(
 {
     QString cmd;
     if (parameterStr.isEmpty())
-        cmd = QString("open -a %1 %2").arg(program, workDirectory);
+        cmd = QString("open -a %1 \"%2\"").arg(program, workDirectory);
     else
-        cmd = QString("open -a %1 --args %2 %3").arg(program, parameterStr, workDirectory);
+        cmd = QString("open -a %1 --args %2 \"%3\"").arg(program, parameterStr, workDirectory);
     return system(cmd.toUtf8().constData()) == 0;
 }
 

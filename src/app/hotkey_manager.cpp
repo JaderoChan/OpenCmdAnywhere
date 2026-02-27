@@ -57,4 +57,6 @@ void HotkeyManager::setHotkey(const gbhk::KeyCombination& newHotkey)
                     gbhk::getReturnCodeMessage(rc).c_str());
         }
     }
+
+    hotkey_ = newHotkey;
 }
