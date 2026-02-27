@@ -12,7 +12,7 @@ static bool runCmd(
         cmd = QString("open -a %1 %2").arg(program, workDirectory);
     else
         cmd = QString("open -a %1 --args %2 %3").arg(program, parameterStr, workDirectory);
-    system(cmd.toUtf8().constData());
+    return system(cmd.toUtf8().constData()) == 0;
 }
 
 bool runProgram(
@@ -20,5 +20,5 @@ bool runProgram(
     const QString& parameter,
     const QString& workDirectory)
 {
-    runCmd(program, parameter, workDirectory);
+    return runCmd(program, parameter, workDirectory);
 }
