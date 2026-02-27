@@ -48,7 +48,7 @@ set(APP_ORGANIZATION_DOMAIN "io.github.jaderochan")
 set(APP_TITLE ${PROJECT_NAME})
 set(APP_VERSION ${PROJECT_VERSION})
 set(APP_COPYRIGHT_TEXT "Copyright (c) 2025 JaderoChan")
-set(APP_UUID "0d0e9c33-5780-4da4-8051-c95dcbcac075")
+set(APP_UUID "273c5512-801d-4be2-9520-84bdd3a00c43")
 
 ###############
 # 定义常用路径 #

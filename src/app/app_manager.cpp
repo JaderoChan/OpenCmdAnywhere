@@ -113,6 +113,7 @@ void AppManager::onHotkeyTriggered()
         return;
     }
     auto executable = defaultExecutables().at(settings_.currentExecutableIdx).filepath;
+    executable = QDir::toNativeSeparators(executable);
     if (executable.isEmpty())
     {
         debugOut(qWarning(), "[Hotkey Triggered] The executable filepath is empty.");
