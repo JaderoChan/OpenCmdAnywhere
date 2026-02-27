@@ -5,7 +5,6 @@
 #include <qdir.h>
 #include <qdesktopservices.h>
 #include <qmessagebox.h>
-#include <qprocess.h>
 
 #include <easy_translate.hpp>
 
@@ -13,6 +12,7 @@
 #include "language.h"
 #include "platforms/auto_run_on_startup.h"
 #include "platforms/front_window_exedir_getter.h"
+#include "platforms/run_program.h"
 #include "utils/qwidget_utils.h"
 #include "utils/logging.h"
 
@@ -119,32 +119,28 @@ void AppManager::onHotkeyTriggered()
         return;
     }
 
-    auto args = QProcess::splitCommand(settings_.parameter);
-
-    QString workDir;
-    try { workDir = getFrontWindowExeDir(); }
-    catch (const std::exception& e)
+    std::thread th([=]()
     {
-        debugOut(qWarning(),
-            "[Hotkey Triggered] Failed to get front window executable directory. Error message: %1.",
-            e.what());
-        return;
-    }
+        QString workDir;
+        try { workDir = getFrontWindowExeDir(); }
+        catch (const std::exception& e)
+        {
+            debugOut(qWarning(),
+                "[Hotkey Triggered] Failed to get front window executable directory. Error message: %1.",
+                e.what());
+            return;
+        }
 
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    QProcess process;
-    process.setProgram(executable);
-    process.setArguments(args);
-    process.setWorkingDirectory(workDir);
-    process.setProcessEnvironment(env);
-    if (!process.startDetached())
-    {
-        debugOut(qWarning(),
-            "[Hotkey Triggered] Failed to start the executable '%1' in directory '%2' with parameters '%3'.",
+        if (!runProgram(executable, settings_.parameter, workDir))
+        {
+            debugOut(qWarning(),
+                "[Hotkey Triggered] Failed to start the executable '%1' in directory '%2' with parameters '%3'.",
+                executable, workDir, settings_.parameter);
+        }
+
+        debugOut(qDebug(),
+            ">>> Start Program '%1' in directory '%2' with parameters '%3'.",
             executable, workDir, settings_.parameter);
-    }
-
-    debugOut(qDebug(),
-        ">>> Start Program '%1' in directory '%2' with parameters '%3'.",
-        executable, workDir, settings_.parameter);
+    });
+    th.detach();
 }

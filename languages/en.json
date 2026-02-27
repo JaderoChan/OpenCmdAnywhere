@@ -1,7 +1,13 @@
 {
     "About": "About",
     "EN": "English",
+    "Exit": "Exit",
     "Exit App": "Exit App",
+    "Error": "Error",
+    "Failed to open log directory": "Failed to open log directory",
+    "Force Continue": "Force Continue",
+    "Force Continue ToolTip": "If an application is forced to run without permission, the program will not work as expected.",
+    "Goto Grant Permission": "Goto Grant Permission",
     "Keying the 'ESC' to cancel and keying the 'Delete' to remove hotkey": "Keying the 'ESC' to cancel and keying the 'Delete' to remove hotkey",
     "Language": "Language",
     "No Parameter": "No Parameter",
@@ -9,8 +15,11 @@
     "OpenCmdAnywhere": "Open Cmd Anywhere",
     "Run Hotkey": "Global Hotkey",
     "Auto Run On Start Up": "Auto Run On Start Up",
+    "Require Permission Text": "Permission denied! Please grant the necessary permissions to activate the Hook Global Hotkey!",
+    "Require Permission Text On Mac": "Permission denied! Please grant the necessary permissions to activate the Hook Global Hotkey and automation scripts (\"System Preferences -> Security & Privacy -> Automation\" enable EasyLinks access to Finder and System Events) !",
     "Run With": "Run Program",
     "Settings": "Settings",
     "Startup Parameter": "Startup Parameter",
+    "Warning": "Warning",
     "ZH": "中文"
 }

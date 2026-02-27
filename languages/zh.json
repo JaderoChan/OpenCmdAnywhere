@@ -1,7 +1,13 @@
 {
     "About": "关于",
     "EN": "English",
-    "Exit App": "退出",
+    "Exit": "退出",
+    "Exit App": "退出应用",
+    "Error": "错误",
+    "Failed to open log directory": "无法打开日志目录",
+    "Force Continue": "强制继续",
+    "Force Continue ToolTip": "在没有权限的情况下强制运行应用程序，程序不会按照预期行为工作。",
+    "Goto Grant Permission": "前往授予权限",
     "Keying the 'ESC' to cancel and keying the 'Delete' to remove hotkey": "键入 'ESC' 取消，键入 'Delete' 删除热键",
     "Language": "语言",
     "No Parameter": "无参数",
@@ -9,8 +15,11 @@
     "OpenCmdAnywhere": "Open Cmd Anywhere",
     "Run Hotkey": "全局热键",
     "Auto Run On Start Up": "开机自启动",
+    "Require Permission Text": "权限不足！请授予必要的权限以激活Hook全局热键！",
+    "Require Permission Text On Mac": "权限不足！请授予必要的权限以激活Hook全局热键与自动化脚本（“系统设置 -> 安全性与隐私 -> 自动化”启用EasyLinks对Finder与System Events的访问权限）！",
     "Run With": "启动程序",
     "Settings": "设置",
     "Startup Parameter": "启动参数",
+    "Warning": "警告",
     "ZH": "中文"
 }
