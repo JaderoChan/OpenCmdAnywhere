@@ -8,3 +8,5 @@ backup/
 install/
 
 .DS_Store
+
+test.sh
