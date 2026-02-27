@@ -3,6 +3,7 @@
 #include <qapplication.h>
 #include <qdir.h>
 #include <qevent.h>
+#include <qlocale.h>
 
 #include <easy_translate.hpp>
 
@@ -26,6 +27,16 @@ public:
 private:
     QString originDir_;
 };
+
+QString currentSystemLang()
+{
+    switch (QLocale::system().language())
+    {
+        case QLocale::Language::English:    return "EN";
+        case QLocale::Language::Chinese:    return "ZH";
+        default:                            return "EN";
+    }
+}
 
 bool setLanguage(const QString& langId)
 {

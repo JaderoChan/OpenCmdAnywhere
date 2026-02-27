@@ -1,133 +1,54 @@
 #include "settings.h"
 
-#include <qapplication.h>
-#include <qlocale.h>
+#include <qsettings.h>
 
 #include "config.h"
+#include "language.h"
 
-Settings::Settings()
-{
-    QMutexLocker<QMutex> locker(&mtx_);
-    executables_ = sm_.readSetting(
-        "Executables",
-    #ifdef Q_OS_WIN
-        QVariantMap({{COMMAND_DISPLAY_NAME, COMMAND_EXE}, {POWER_SHELL_DISPLAY_NAME, POWER_SHELL_EXE}})
-    #elif defined(Q_OS_MAC)
-        QVariantMap({{TERMINAL_DISPLAY_NAME, TERMINAL_EXE}})
-    #else
-        // pass
-    #endif // Q_OS_WIN
-    ).toMap();
-}
+#define READ_KC(settings, key, defaultValue) \
+gbhk::KeyCombination(settings.value(key, defaultValue).toString().toStdString())
 
-Settings& Settings::getInstance()
+static QList<ExecutableItem> createDefaultExecutables()
 {
-    static Settings instance;
-    return instance;
-}
-
-QString Settings::getLanguage()
-{
-    QLocale locale = QLocale::system();
-    switch (locale.language())
-    {
-        case QLocale::Language::English: return getInstance().sm_.readSetting("Language", "EN").toString();
-        case QLocale::Language::Chinese: return getInstance().sm_.readSetting("Language", "ZH").toString();
-        default: return getInstance().sm_.readSetting("Language", "EN").toString();
-    }
-}
-
-std::pair<QString, QString> Settings::getCurrentExecutable()
-{
+    QList<ExecutableItem> executables;
 #ifdef Q_OS_WIN
-    QString displayName = getInstance().sm_.readSetting("CurrentExecutable", COMMAND_DISPLAY_NAME).toString();
+    executables.append(ExecutableItem{COMMAND_NAME, COMMAND_FILEPATH});
+    executables.append(ExecutableItem{POWERSHELL_NAME, POWERSHELL_FILEPATH});
 #elif defined(Q_OS_MAC)
-    QString displayName = getInstance().sm_.readSetting("CurrentExecutable", TERMINAL_DISPLAY_NAME).toString();
+    executables.append(ExecutableItem{TERMINAL_NAME, TERMINAL_FILEPATH});
 #else
-    // pass
-#endif
-    const auto& map = getAllExecutables();
-    if (map.contains(displayName))
-        return {displayName, map[displayName].toString()};
-    return {displayName, ""};
+    // Pass
+#endif // Q_OS_WIN
+    return executables;
 }
 
-QString Settings::getParameter()
+const QList<ExecutableItem>& defaultExecutables()
 {
-    return getInstance().sm_.readSetting("Parameter", "").toString();
+    static QList<ExecutableItem> executables = createDefaultExecutables();
+    return executables;
 }
 
-gbhk::KeyCombination Settings::getKeyCombination()
+Settings loadSettings()
 {
-    QString kcStr =
-        getInstance().sm_.readSetting("Hotkey", DEFAULT_HOTKEY).toString();
-    return gbhk::KeyCombination::fromString(kcStr.toStdString());
+    Settings settings;
+    QSettings qsettings(QSettings::NativeFormat, QSettings::UserScope, APP_ORGANIZATION, APP_TITLE);
+
+    settings.autoRunOnStartUp = qsettings.value("AutoRunOnStartUp", false).toBool();
+    settings.currentExecutableIdx = qsettings.value("CurrentExecutableIdx", 0).toInt();
+    settings.language = qsettings.value("Language", currentSystemLang()).toString();
+    settings.parameter = qsettings.value("Parameter", "").toString();
+    settings.hotkey = READ_KC(qsettings, "Hotkey", DEFAULT_HOTKEY);
+
+    return settings;
 }
 
-bool Settings::getIsAutoRunOnStartUp()
+void saveSettings(const Settings& settings)
 {
-    return getInstance().sm_.readSetting("AutoRunOnStartUp", false).toBool();
-}
+    QSettings qsettings(QSettings::NativeFormat, QSettings::UserScope, APP_ORGANIZATION, APP_TITLE);
 
-void Settings::setLanguage(const QString& value)
-{
-    getInstance().sm_.writeSetting("Language", value);
-}
-
-void Settings::setCurrentExecutable(const QString& value)
-{
-    getInstance().sm_.writeSetting("CurrentExecutable", value);
-}
-
-void Settings::setParameter(const QString& value)
-{
-    if (value.isEmpty())
-        getInstance().sm_.removeSetting("Parameter");
-    else
-        getInstance().sm_.writeSetting("Parameter", value);
-}
-
-void Settings::setKeyCombination(const gbhk::KeyCombination& value)
-{
-    QString kcStr = QString::fromStdString(value.toString());
-    auto& sm = getInstance().sm_;
-    sm.writeSetting("Hotkey", kcStr);
-}
-
-void Settings::setAutoRunOnStartUp(bool value)
-{
-    getInstance().sm_.writeSetting("AutoRunOnStartUp", value);
-}
-
-QVariantMap Settings::getAllExecutables()
-{
-    QMutexLocker<QMutex> locker(&getInstance().mtx_);
-    return getInstance().executables_;
-}
-
-void Settings::addExecutable(const QString& displayName, const QString& filepath)
-{
-    {
-        QMutexLocker<QMutex> locker(&getInstance().mtx_);
-        getInstance().executables_[displayName] = filepath;
-    }
-    getInstance().sm_.writeSetting("Executables", getAllExecutables());
-}
-
-void Settings::removeExecutable(const QString& displayName)
-{
-    {
-        QMutexLocker<QMutex> locker(&getInstance().mtx_);
-        getInstance().executables_.remove(displayName);
-    }
-    getInstance().sm_.writeSetting("Executables", getAllExecutables());
-    // 如果删除的是当前Executable，则尝试回退当前Executable。
-    if (getCurrentExecutable().first == displayName)
-    {
-        auto exes = getAllExecutables();
-        if (!exes.isEmpty())
-            setCurrentExecutable(exes.begin().key());
-        else
-            setCurrentExecutable("");
-    }
+    qsettings.setValue("AutoRunOnStartUp", settings.autoRunOnStartUp);
+    qsettings.setValue("CurrentExecutableIdx", settings.currentExecutableIdx);
+    qsettings.setValue("Language", settings.language);
+    qsettings.setValue("Parameter", settings.parameter);
+    qsettings.setValue("Hotkey", QString::fromStdString(settings.hotkey.toString()));
 }

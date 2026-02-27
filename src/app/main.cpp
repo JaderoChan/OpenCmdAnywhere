@@ -5,15 +5,12 @@
 #include <easy_translate.hpp>
 
 #include "config.h"
+#include "app_manager.h"
 #include "file_logger.h"
-#include "hotkey_handler.h"
 #include "language.h"
-#include "require_permission_dialog.h"
-#include "settings.h"
-#include "systemtray.h"
 #include "logo_icon.h"
+#include "require_permission_dialog.h"
 #include "platforms/permission_manager.h"
-#include "platforms/auto_run_on_startup.h"
 #include "utils/logging.h"
 
 int main(int argc, char* argv[])
@@ -39,7 +36,9 @@ int main(int argc, char* argv[])
         debugOut(qWarning(), "[Start] Failed to setup file logger.");
 
     // 设置语言
-    setLanguage(Settings::getLanguage());
+    setLanguage(loadSettings().language);
+
+    a.setApplicationDisplayName(EASYTR(APP_TITLE));
 
     // 检查应用权限
     if (!PermissionManager::hasPermission())
@@ -60,13 +59,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    HotkeyHandler::setHotkey(Settings::getKeyCombination());
-
-    if (Settings::getIsAutoRunOnStartUp() != isAutoRunOnStartUp())
-        setAutoRunOnStartUp(Settings::getIsAutoRunOnStartUp());
-
-    SystemTray st;
-    a.installEventFilter(&st);
+    AppManager appMgr;
 
     int ret = a.exec();
 

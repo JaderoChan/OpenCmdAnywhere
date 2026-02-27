@@ -3,33 +3,26 @@
 #include <qdialog.h>
 #include <qevent.h>
 
+#include <global_hotkey/key_combination.hpp>
+
 #include "ui_settings_dialog.h"
+#include "settings.h"
 
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SettingsDialog(QWidget* parent = nullptr);
+    SettingsDialog(const QString& parameter, const gbhk::KeyCombination& hotkey, QWidget* parent = nullptr);
 
 signals:
-    void executablesChanged();
+    void parameterChanged(QString parameter);
+    void hotkeyChanged(gbhk::KeyCombination hotkey);
 
 protected:
-    virtual void updatetText();
+    virtual void updateText();
     void changeEvent(QEvent* event) override;
 
-    void updateExecutablesTable();
-
-    void onParameterTextChanged();
-    void onHotkeyChanged(QKeyCombination kc);
-    void onAddExeBtnClicked();
-    void onEditExeBtnClicked();
-    void onRemoveExeBtnClicked();
-
 private:
-    // 获取当前选中的行索引，若未选中行则返回-1；
-    int getSelectedRow_();
-
     Ui::SettingsDialog ui;
 };

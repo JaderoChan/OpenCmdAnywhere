@@ -35,14 +35,14 @@ void RequirePermissionDialog::updateText()
 {
     setWindowTitle(EASYTR("Warning"));
 #ifdef Q_OS_MAC
-    ui.messageTextLbl->setText(EASYTR("RequirePermissionText.Mac"));
+    ui.messageTextLbl->setText(EASYTR("Require Permission Text On Mac"));
 #else
-    ui.messageTextLbl->setText(EASYTR("RequirePermissionText"));
+    ui.messageTextLbl->setText(EASYTR("Require Permission Text"));
 #endif // Q_OS_MAC
     ui.gotoGrantPermissionBtn->setText(EASYTR("Goto Grant Permission"));
     ui.exitBtn->setText(EASYTR("Exit"));
     ui.forceContinueBtn->setText(EASYTR("Force Continue"));
-    ui.forceContinueBtn->setToolTip(EASYTR("Force Continue.ToolTip"));
+    ui.forceContinueBtn->setToolTip(EASYTR("Force Continue ToolTip"));
 }
 
 void RequirePermissionDialog::changeEvent(QEvent* event)

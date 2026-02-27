@@ -28,14 +28,14 @@
 #endif // Q_OS_MAC
 
 // Windows
-#define COMMAND_DISPLAY_NAME        "CMD"
-#define POWER_SHELL_DISPLAY_NAME    "Power Shell"
-#define COMMAND_EXE                 "C:/Windows/System32/cmd.exe"
-#define POWER_SHELL_EXE             "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
+#define COMMAND_NAME                "CMD"
+#define COMMAND_FILEPATH            "C:/Windows/System32/cmd.exe"
+#define POWERSHELL_NAME             "Power Shell"
+#define POWERSHELL_FILEPATH         "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
 
 // MacOS
-#define TERMINAL_DISPLAY_NAME       "Terminal"
-#define TERMINAL_EXE                "/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"
+#define TERMINAL_NAME               "Terminal"
+#define TERMINAL_FILEPATH           "/System/Applications/Utilities/Terminal.app"
 
 #ifdef Q_OS_WIN
     #define DEFAULT_HOTKEY          "Alt+T"
