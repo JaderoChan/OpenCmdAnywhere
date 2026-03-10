@@ -21,17 +21,17 @@ file(
 )
 # 平台相关的代码
 if(WIN32)
-    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_win.cpp)
+    file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_win.cpp)
 elseif(APPLE)
     file(
-        GLOB PLATFORMS_SRC
+        GLOB PLATFORM_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_mac.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_mac.mm
     )
 else()
-    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_linux.cpp)
+    file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_linux.cpp)
 endif()
-list(APPEND SRC ${PLATFORMS_SRC})
+list(APPEND SRC ${PLATFORM_SRC})
 # UI文件
 file(GLOB_RECURSE UI ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
 # QRC文件
@@ -109,7 +109,7 @@ target_compile_definitions(
 # 配置应用资源/属性
 if(WIN32)
     # Windows
-    set(APP_ICON ${APP_ICONS_DIR}/app.ico)
+    set(APP_ICON ${APP_ICON_DIR}/app.ico)
 
     set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/app.rc)
     configure_file(
@@ -120,7 +120,7 @@ if(WIN32)
     target_sources(${PROJECT_NAME} PRIVATE ${RC_FILE})
 elseif(APPLE)
     # Apple
-    set(APP_ICON ${APP_ICONS_DIR}/app.icns)
+    set(APP_ICON ${APP_ICON_DIR}/app.icns)
 
     # Info Plist Strings
     set(
