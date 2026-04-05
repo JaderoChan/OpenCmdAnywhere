@@ -30,8 +30,8 @@ int main(int argc, char* argv[])
     a.setQuitOnLastWindowClosed(false);
 
     FileLogger& fileLogger = FileLogger::getInstance();
-    if (!fileLogger.setup(APP_LOG_FILEPATH))
-        debugOut(qWarning(), "[Start] Failed to setup file logger.");
+    fileLogger.setFilepath(APP_LOG_FILEPATH);
+    fileLogger.install();
 
     // 设置语言
     setLanguage(loadSettings().language);
