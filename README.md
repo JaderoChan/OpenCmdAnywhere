@@ -10,4 +10,4 @@
 
 ## 平台
 
-**Windows** 和 **MacOS**
+**Windows** 和 **macOS**

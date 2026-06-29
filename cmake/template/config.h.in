@@ -33,7 +33,7 @@
 #define POWERSHELL_NAME             "Power Shell"
 #define POWERSHELL_FILEPATH         "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
 
-// MacOS
+// macOS
 #define TERMINAL_NAME               "Terminal"
 #define TERMINAL_FILEPATH           "/System/Applications/Utilities/Terminal.app"
 
